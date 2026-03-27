@@ -1,0 +1,75 @@
+import React, { useState } from 'react'
+import axios from "axios"
+import { Link } from "react-router-dom"
+import "./App.css"
+
+export default function App() {
+
+  const [data, setData] = useState({
+    name: "",
+    username: "",
+    email: "",
+    password: "",
+    phoneNo: "",
+    gender: "",
+    dob: ""
+  })
+
+  const [error, setError] = useState("")
+
+  function handleChange(e) {
+    const { name, value } = e.target
+    setData(prev => ({ ...prev, [name]: value }))
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+
+    if (data.name.length < 6) return setError("Name must be 6+ chars")
+    if (data.password.length < 8) return setError("Password must be 8+ chars")
+    if (data.phoneNo.length !== 10) return setError("Phone must be 10 digits")
+
+    setError("")
+
+    try {
+      const res = await axios.post("http://localhost:3000/user/submit", data)
+      alert(res.data.message)
+    } catch (err) {
+      setError(err.response?.data?.message)
+    }
+
+    setData({
+      name: "", username: "", email: "", password: "",
+      phoneNo: "", gender: "", dob: ""
+    })
+  }
+
+  return (
+    <div className='container'>
+      <form onSubmit={handleSubmit}>
+
+        {error && <p style={{ color: "red" }}>{error}</p>}
+
+        <input name='name' placeholder="Name" value={data.name} onChange={handleChange} />
+        <input name='username' placeholder="Username" value={data.username} onChange={handleChange} />
+        <input name='email' type="email" placeholder="Email" value={data.email} onChange={handleChange} />
+        <input name='password' type="password" placeholder="Password" value={data.password} onChange={handleChange} />
+        <input name='phoneNo' placeholder="Phone" maxLength={10} value={data.phoneNo} onChange={handleChange} />
+
+        <select name="gender" value={data.gender} onChange={handleChange}>
+          <option value="">Select Gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+
+        <input type="date" name="dob" value={data.dob} onChange={handleChange} />
+
+        <button type='submit'>Register</button>
+
+        
+        <br />
+        <Link to="/login">Login</Link>
+      </form>
+    </div>
+  )
+}
