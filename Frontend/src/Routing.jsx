@@ -9,6 +9,11 @@ import ShowProducts from './ShowProducts'
 import SingleProduct from './SingleProduct'
 import ProtectedRoute from './ProtectedRoute'
 import Logout from './Logout'
+import Cart from './Cart'
+import { CartProvider } from './CartContext'
+import { AuthProvider } from './AuthContext'
+import ForgotPassword from './ForgotPassword'
+import ResetPassword from './ResetPassword'
 
 const navigator = createBrowserRouter([
     {
@@ -27,7 +32,10 @@ const navigator = createBrowserRouter([
         },
         {
             path: "login",
-            element: <Login />
+            element:
+
+                <Login />
+
         },
         {
             path: "addproduct",
@@ -45,8 +53,25 @@ const navigator = createBrowserRouter([
             element: <SingleProduct />
         },
         {
-            path:"logout",
-            element: <Logout/>
+            path: "logout",
+            element: <Logout />
+        },
+        {
+            path: "cart",
+            element:
+
+                <ProtectedRoute>
+                    <Cart />
+                </ProtectedRoute>
+        },
+        {
+            path: "forgot-password",
+            element:
+                <ForgotPassword />
+        },
+        {
+            path: "reset-password/:token",
+            element: <ResetPassword />
         }
 
         ]
@@ -57,7 +82,11 @@ const navigator = createBrowserRouter([
 export default function Routing() {
     return (
         <>
-            <RouterProvider router={navigator}></RouterProvider>
+            <AuthProvider>
+                <CartProvider>
+                    <RouterProvider router={navigator}></RouterProvider>
+                </CartProvider>
+            </AuthProvider>
         </>
     )
 }

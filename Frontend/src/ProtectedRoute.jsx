@@ -1,10 +1,10 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 
 export default function ProtectedRoute({ children }) {
 
-    const navigate = useNavigate()
+
     const [loggedIn, setLoggedIn] = useState(false)
     const [loading, setLoading] = useState(true)
 
@@ -33,7 +33,7 @@ export default function ProtectedRoute({ children }) {
     }
     if (loading) return <h2>Loading...</h2>
 
-    if (!loggedIn) navigate("/login") //false state
+    if (!loggedIn) return <Navigate to="/login" />
 
     return children
 }   

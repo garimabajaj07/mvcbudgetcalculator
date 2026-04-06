@@ -1,17 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useNavigate } from "react-router-dom"
-import axios from "axios"
+import { useAuth } from './AuthContext'
 
 export default function Login() {
 
   const navigate = useNavigate()
 
-  const [data, setData] = useState({
-    username: "",
-    password: ""
-  })
-
-  const [error, setError] = useState("")
+  const { data, setData, error, loginUser } = useAuth()
 
   function handleChange(e) {
     const { name, value } = e.target
@@ -21,25 +16,16 @@ export default function Login() {
   async function handleSubmit(e) {
     e.preventDefault()
 
-    try {
-      const res = await axios.post(
-        "http://localhost:3000/user/login",
-        data,
-        { withCredentials: true }
+    const res = await loginUser()
 
-      )
-      setData(
-        {
-          username:"",
-          password:""
-          
-        }
-      )
-      navigate("/records")
+    if (res) {
+      setData({
+        username: "",
+        password: ""
+      })
 
       alert(res.data.message)
-    } catch (err) {
-      setError(err.response?.data?.message || "Login failed")
+      navigate("/records")
     }
   }
 
@@ -48,12 +34,33 @@ export default function Login() {
       <form onSubmit={handleSubmit}>
         <h2>Login</h2>
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        {error && <p className="error">{error}</p>}
 
-        <input type="text" name="username" placeholder="Username" onChange={handleChange} />
-        <input type="password" name="password" placeholder="Password" onChange={handleChange} />
+        <input
+          type="text"
+          name="username"
+          placeholder="Username"
+          value={data.username}
+          onChange={handleChange}
+        />
+
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={data.password}
+          onChange={handleChange}
+        />
+
+        <p
+          style={{ color: "red", cursor: "pointer" }}
+          onClick={() => navigate("/forgot-password")}
+        >
+          Forgot Password?
+        </p>
 
         <button type="submit">Login</button>
+
       </form>
     </div>
   )

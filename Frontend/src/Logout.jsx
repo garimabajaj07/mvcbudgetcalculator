@@ -1,22 +1,23 @@
 import React, { useEffect } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import { useCart } from "./CartContext"
 
 export default function Logout() {
 
   const navigate = useNavigate()
+  const { clearCart } = useCart()
 
   useEffect(() => {
     async function logoutUser() {
       try {
-        const res = await axios.get(
+        await axios.get(
           "http://localhost:3000/user/logout",
           { withCredentials: true }
         )
 
-        console.log(res.data.message)
+        clearCart()   // RESET CART HERE
 
-        // redirect to login after logout
         navigate("/login")
 
       } catch (error) {

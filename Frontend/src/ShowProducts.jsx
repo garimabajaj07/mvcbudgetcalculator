@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import axios from "axios"
 import { Link } from "react-router-dom"
+import "./App.css"
 
 export default function ShowProducts() {
 
@@ -20,34 +21,24 @@ export default function ShowProducts() {
   }, [])
 
   return (
-    <div className="container">
-
+  <div className="container">
+    <div className="product-grid">
       {products.map(product => (
-      
         <Link key={product._id} to={`/singleproduct/${product._id}`}>
-        <div key={product._id} style={{ border: "1px solid #ccc", margin: "10px", padding: "10px" }}>
           
+          <div className="product-card">
 
-          {/* Images */}
-          <div style={{ display: "flex", gap: "10px" }}>
-            {product.images.map((img, index) => (
-              <img
-              key={index}
-              src={`http://localhost:3000/uploads/${img}`}
-              alt="product"
-              width="120"
-              />
-            ))}
-          </div>
+            <img src={`http://localhost:3000/uploads/${product.images[0]}`} />
+
             <h3>{product.name}</h3>
             <p>{product.description}</p>
-            <p>₹ {product.price}</p>
+            <p className="price">₹ {product.price}</p>
 
-        </div>
+          </div>
+
         </Link>
-        
       ))}
-
     </div>
-  )
+  </div>
+)
 }

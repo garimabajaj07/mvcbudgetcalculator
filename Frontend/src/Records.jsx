@@ -101,8 +101,8 @@ export default function Records() {
                             <tr key={user._id}>
                                 <td>{user.name}</td>
                                 <td>{user.email}</td>
-                                <td onClick={() => handleDelete(user._id)} style={{ cursor: 'pointer' }}>🗑️</td>
-                                <td onClick={() => handleEdit(user)} style={{ cursor: 'pointer' }}>✏️</td>
+                                <td  className="action-btn" onClick={() => handleDelete(user._id)} style={{ cursor: 'pointer' }}>🗑️</td>
+                                <td  className="action-btn"  onClick={() => handleEdit(user)} style={{ cursor: 'pointer' }}>✏️</td>
                             </tr>
                         ))}
                     </tbody>
@@ -112,7 +112,7 @@ export default function Records() {
             
       {/* ✅ Edit Form */}
       {editUser && (
-        <div>
+        <div className='edit-form'>
           <h3>Edit User</h3>
 
           <input
@@ -131,7 +131,7 @@ export default function Records() {
             placeholder="Email"
           />
 
-          <div>
+          <div className='edit-actions'>
             <button onClick={handleUpdate}>Update</button>
             <button onClick={() => setEditUser(null)}>Cancel</button>
           </div>

@@ -2,10 +2,20 @@ import axios from 'axios'
 import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import { useCart } from './CartContext'
 
 export default function SingleProduct() {
     const { id } = useParams()
     const [product, setProduct] = useState(null)
+    const { cart, addToCart, increaseQuantity, decreaseQuantity } = useCart()
+
+    let quantity = 0
+
+    const cartItem = cart.find(item => item.productId._id === id)
+
+    if (cartItem) {
+        quantity = cartItem.quantity
+    }
 
     useEffect(() => { fetchSingleProduct(id) },
         [id])
@@ -20,32 +30,60 @@ export default function SingleProduct() {
 
         } catch (error) {
             console.log(error);
-            
+
         }
 
     }
 
-    if(!product) return <p>Loading...</p>
+    function handleIncrease() {
+        if (quantity === 0) {
+            addToCart(product._id)
+        } else {
+            increaseQuantity(product._id)
+        }
+    }
 
+    function handleDecrease() {
+        if (quantity > 0) {
+            decreaseQuantity(product._id)
+        }
+    }
+    
+
+    if (!product) return <p>Loading...</p>
     return (
-        <>
-        <div>
-           {/* Images */}
-          <div style={{ display: "flex", gap: "10px" }}>
-            {product.images.map((img, index) => (
-              <img
-              key={index}
-              src={`http://localhost:3000/uploads/${img}`}
-              alt="product"
-              width="120"
-              />
-            ))}
-          </div>
-            <h3>{product.name}</h3>
-            <p>{product.description}</p>
-            <p>₹ {product.price}</p>    
-        </div>
+        <div className="container">
+            <div className="single-product">
 
-        </>
+                <div>
+                    {product.images.map((img, index) => (
+                        <img
+                            key={index}
+                            src={`http://localhost:3000/uploads/${img}`}
+                        />
+                    ))}
+                </div>
+
+                <div>
+                    <h2>{product.name}</h2>
+                    <p>{product.description}</p>
+                    <p className="price">₹ {product.price}</p>
+
+                    {quantity === 0 ? (
+                        <button onClick={() => addToCart(product._id)}>
+                            Add to Cart
+                        </button>
+                    ) : (
+                        <div className="quantity-box">
+                            <button onClick={handleDecrease}>-</button>
+                            <button>{quantity}</button>
+                            <button onClick={handleIncrease}>+</button>
+                        </div>
+                    )}
+
+                </div>
+
+            </div>
+        </div>
     )
 }

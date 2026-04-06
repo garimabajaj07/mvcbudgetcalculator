@@ -4,6 +4,7 @@ import cors from "cors"
 import UserRouting from "./routes/userRoutes.js"
 import cookieParser from "cookie-parser"
 import productRouter from "./routes/productRoute.js"
+import cartRoutes from "./routes/cartRoutes.js"
 
 
 const app = express()
@@ -26,5 +27,6 @@ await connectDB()
 //API
 app.use("/product", productRouter)
 app.use("/user", UserRouting)
+app.use("/cart", cartRoutes)
 
 app.listen(Port, ()=> console.log("Server started at", Port))
