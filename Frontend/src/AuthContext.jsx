@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import axios from "axios"
+import api from '../axios'
 
 const AuthContext = createContext()
 export const useAuth = () => useContext(AuthContext)
@@ -21,7 +22,7 @@ export function AuthProvider({ children }) {
 
   async function checkLogin() {
     try {
-      await axios.get("http://localhost:3000/user/checklogin", {
+      await api.get("/user/checklogin", {
         withCredentials: true
       })
       setIsLoggedIn(true)
@@ -33,8 +34,8 @@ export function AuthProvider({ children }) {
   // LOGIN
   async function loginUser() {
     try {
-      const res = await axios.post(
-        "http://localhost:3000/user/login",
+      const res = await api.post(
+        "/user/login",
         data,
         { withCredentials: true }
       )
@@ -52,7 +53,7 @@ export function AuthProvider({ children }) {
   //  LOGOUT
   async function logoutUser() {
     try {
-      await axios.get("http://localhost:3000/user/logout", {
+      await api.get("/user/logout", {
         withCredentials: true
       })
 

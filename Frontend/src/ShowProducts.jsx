@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import axios from "axios"
 import { Link } from "react-router-dom"
 import "./App.css"
+import api from "../axios"
 
 export default function ShowProducts() {
 
@@ -10,7 +11,7 @@ export default function ShowProducts() {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const res = await axios.get("http://localhost:3000/product/showproducts")
+        const res = await api.get("/product/showproducts")
         setProducts(res.data)
       } catch (error) {
         console.log(error)
@@ -28,7 +29,7 @@ export default function ShowProducts() {
           
           <div className="product-card">
 
-            <img src={`http://localhost:3000/uploads/${product.images[0]}`} />
+            <img src={`${import.meta.env.VITE_BASEURL}/uploads/${product.images[0]}`} />
 
             <h3>{product.name}</h3>
             <p>{product.description}</p>

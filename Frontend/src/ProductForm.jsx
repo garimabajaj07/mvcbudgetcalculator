@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import api from "../axios"
 
 export default function ProductForm() {
 
@@ -37,8 +38,8 @@ export default function ProductForm() {
         }
 
         try {
-            const res = await axios.post(
-                "http://localhost:3000/product/addproduct",
+            const res = await api.post(
+                "/product/addproduct",
                 formData,
                 {
                     headers: {

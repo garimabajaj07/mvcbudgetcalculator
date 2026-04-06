@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
+import api from '../axios'
 
 export default function ProtectedRoute({ children }) {
 
@@ -13,7 +14,7 @@ export default function ProtectedRoute({ children }) {
 
     async function checkForLogin() {
         try {
-            const response = await axios.get("http://localhost:3000/user/check",
+            const response = await api.get("/user/check",
                 { withCredentials: true }
             )
             console.log(response);

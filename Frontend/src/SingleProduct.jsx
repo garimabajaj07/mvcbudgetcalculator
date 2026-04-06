@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useCart } from './CartContext'
+import api from '../axios'
 
 export default function SingleProduct() {
     const { id } = useParams()
@@ -22,7 +23,7 @@ export default function SingleProduct() {
 
     async function fetchSingleProduct() {
         try {
-            const response = await axios.get(`http://localhost:3000/product/singleproduct/${id}`)
+            const response = await api.get(`/product/singleproduct/${id}`)
             console.log(response.data);
 
             setProduct(response.data)
@@ -59,7 +60,7 @@ export default function SingleProduct() {
                     {product.images.map((img, index) => (
                         <img
                             key={index}
-                            src={`http://localhost:3000/uploads/${img}`}
+                            src={`${import.meta.env.VITE_BASEURL}/uploads/${img}`}
                         />
                     ))}
                 </div>

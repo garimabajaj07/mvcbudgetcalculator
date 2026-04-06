@@ -2,6 +2,7 @@ import React, { useEffect } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import { useCart } from "./CartContext"
+import api from "../axios"
 
 export default function Logout() {
 
@@ -11,8 +12,8 @@ export default function Logout() {
   useEffect(() => {
     async function logoutUser() {
       try {
-        await axios.get(
-          "http://localhost:3000/user/logout",
+        await api.get(
+          "/user/logout",
           { withCredentials: true }
         )
 

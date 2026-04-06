@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react"
 import axios from "axios"
+import api from "../axios"
 
 const CartContext = createContext()
 export const useCart = () => useContext(CartContext)
@@ -9,8 +10,8 @@ export function CartProvider({ children }) {
 
   async function fetchCart() {
     try {
-      const res = await axios.get(
-        "http://localhost:3000/cart",
+      const res = await api.get(
+        "/cart",
         { withCredentials: true }
       )
       setCart(res.data.items || [])
@@ -25,8 +26,8 @@ export function CartProvider({ children }) {
 
   async function addToCart(productId) {
     try {
-      await axios.post(
-        "http://localhost:3000/cart/add",
+      await api.post(
+        "/cart/add",
         { productId },
         { withCredentials: true }
       )
@@ -39,8 +40,8 @@ export function CartProvider({ children }) {
 
   async function decreaseQuantity(productId) {
     try {
-      await axios.post(
-        "http://localhost:3000/cart/decrease",
+      await api.post(
+        "/cart/decrease",
         { productId },
         { withCredentials: true }
       )
@@ -53,8 +54,8 @@ export function CartProvider({ children }) {
 
   async function increaseQuantity(productId) {
     try {
-      await axios.post(
-        "http://localhost:3000/cart/add",
+      await api.post(
+        "/cart/add",
         { productId },
         { withCredentials: true }
       )
@@ -66,8 +67,8 @@ export function CartProvider({ children }) {
   }
   async function removeFromCart(productId) {
     try {
-      await axios.delete(
-        `http://localhost:3000/cart/remove/${productId}`,
+      await api.delete(
+        `/cart/remove/${productId}`,
         { withCredentials: true }
       )
 

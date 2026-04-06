@@ -1,6 +1,7 @@
 import UserModel from "../model/schema.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
+import "dotenv/config"
 
 export async function submit(req, res) {
     try {
@@ -148,7 +149,8 @@ export async function logout(req,res){
     res.clearCookie("token", {
         httpOnly: true,
         secure: false,
-        sameSite: "lax"
+        sameSite: process.env.SAME_SITE, // Prevent CSRF attacks
+        maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
     })
 
     res.json({ message: "Logged out successfully" })

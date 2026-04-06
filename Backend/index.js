@@ -5,13 +5,13 @@ import UserRouting from "./routes/userRoutes.js"
 import cookieParser from "cookie-parser"
 import productRouter from "./routes/productRoute.js"
 import cartRoutes from "./routes/cartRoutes.js"
-
+import "dotenv/config"
 
 const app = express()
-const Port= 3000
+const Port= process.env.PORT
 
 const corsOptions={
-    origin:"http://localhost:5173", //frontend url
+    origin: process.env.FRONTEND_URL,//frontend url
     credentials: true     // required for cookies
 }
 

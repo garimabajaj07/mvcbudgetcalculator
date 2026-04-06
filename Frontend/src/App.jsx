@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import axios from "axios"
 import { Link } from "react-router-dom"
 import "./App.css"
+import api from '../axios'
 
 export default function App() {
 
@@ -32,7 +33,7 @@ export default function App() {
     setError("")
 
     try {
-      const res = await axios.post("http://localhost:3000/user/submit", data)
+      const res = await api.post("/user/submit", data)
       alert(res.data.message)
     } catch (err) {
       setError(err.response?.data?.message)
