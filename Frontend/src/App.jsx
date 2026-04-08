@@ -63,7 +63,7 @@ export default function App() {
           <option value="female">Female</option>
         </select>
 
-        <input type="date" name="dob" value={data.dob} onChange={handleChange} />
+          <input type="date" name="dob" value={data.dob} onChange={handleChange} />
 
         <button type='submit'>Register</button>
 

@@ -23,7 +23,9 @@ export default function SingleProduct() {
 
     async function fetchSingleProduct() {
         try {
-            const response = await api.get(`/product/singleproduct/${id}`)
+            const response = await api.get(`/product/singleproduct/${id}`,{
+                withCredentials:true
+            })
             console.log(response.data);
 
             setProduct(response.data)

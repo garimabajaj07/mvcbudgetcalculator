@@ -14,7 +14,7 @@ export default function ProtectedRoute({ children }) {
 
     async function checkForLogin() {
         try {
-            const response = await api.get("/user/check",
+            const response = await api.get("/user/checklogin",
                 { withCredentials: true }
             )
             console.log(response);
