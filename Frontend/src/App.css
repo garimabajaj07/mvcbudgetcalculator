@@ -231,3 +231,129 @@ tr:hover {
   margin-top: 20px;
   color: #777;
 }
+
+/* ================= RESPONSIVE DESIGN ================= */
+
+/* TABLET (<= 992px) */
+@media (max-width: 992px) {
+  .container {
+    padding: 15px;
+  }
+
+  .single-product {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .single-product img {
+    width: 200px;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+}
+
+
+/* MOBILE (<= 768px) */
+@media (max-width: 768px) {
+
+  /* HEADER */
+  .header {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .header a {
+    margin: 0 10px;
+  }
+
+  /* FORM */
+  form {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* PRODUCT GRID */
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+  }
+
+  .product-card img {
+    height: 120px;
+  }
+
+  /* CART */
+  .cart-item {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .cart-total {
+    text-align: center;
+  }
+
+  /* TABLE */
+  table {
+    font-size: 14px;
+  }
+
+  th, td {
+    padding: 8px;
+  }
+}
+
+
+/* SMALL MOBILE (<= 480px) */
+@media (max-width: 480px) {
+
+  /* HEADER */
+  .header {
+    padding: 10px;
+  }
+
+  /* CONTAINER */
+  .container {
+    padding: 10px;
+  }
+
+  /* PRODUCT GRID */
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* PRODUCT CARD */
+  .product-card {
+    padding: 12px;
+  }
+
+  /* SINGLE PRODUCT */
+  .single-product img {
+    width: 150px;
+  }
+
+  /* BUTTON */
+  button {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  /* QUANTITY */
+  .quantity-box button {
+    width: 28px;
+    height: 28px;
+  }
+
+  /* TABLE -> SCROLLABLE */
+  .table-container {
+    overflow-x: auto;
+  }
+
+  table {
+    min-width: 600px;
+  }
+}
