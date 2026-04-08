@@ -14,6 +14,9 @@ import { CartProvider } from './CartContext'
 import { AuthProvider } from './AuthContext'
 import ForgotPassword from './ForgotPassword'
 import ResetPassword from './ResetPassword'
+import AdminLogin from './admin pages/AdminLogin'
+import AdminHome from './admin pages/AdminHome'
+import { AdminProvider } from './AdminContext'
 
 const navigator = createBrowserRouter([
     {
@@ -72,6 +75,14 @@ const navigator = createBrowserRouter([
         {
             path: "reset-password/:token",
             element: <ResetPassword />
+        },
+        {
+            path: "/admin/login",
+            element:<AdminLogin/>
+        },
+        {
+            path: "/admin/home",
+            element:<AdminHome/>
         }
 
         ]
@@ -82,11 +93,14 @@ const navigator = createBrowserRouter([
 export default function Routing() {
     return (
         <>
+        <AdminProvider>
+
             <AuthProvider>
                 <CartProvider>
                     <RouterProvider router={navigator}></RouterProvider>
                 </CartProvider>
             </AuthProvider>
+        </AdminProvider>
         </>
     )
 }

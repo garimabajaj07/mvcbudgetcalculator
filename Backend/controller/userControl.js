@@ -87,7 +87,7 @@ export async function login(req, res) {
         //SEND TOKEN TO FRONTEND
         res.cookie("token", userToken, {
             httpOnly: true,
-            secure: false,
+            secure: true,
             sameSite:  process.env.SAME_SITE,
             maxAge: 60 * 60 * 1000
         })
@@ -148,7 +148,7 @@ export async function logout(req,res){
 
     res.clearCookie("token", {
         httpOnly: true,
-        secure: false,
+        secure: true,
         sameSite: process.env.SAME_SITE, // Prevent CSRF attacks
         maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
     })
