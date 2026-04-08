@@ -88,7 +88,7 @@ export async function login(req, res) {
         res.cookie("token", userToken, {
             httpOnly: true,
             secure: false,
-            sameSite: "lax",
+            sameSite:  process.env.SAME_SITE,
             maxAge: 60 * 60 * 1000
         })
         res.json({ message: "Login successful" })
