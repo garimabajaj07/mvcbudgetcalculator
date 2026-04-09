@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
-import axios from "axios"
 import api from '../axios'
 
 const AdminContext = createContext()
@@ -22,7 +21,7 @@ export function AdminProvider({ children }) {
 
   async function checkLogin() {
     try {
-      await api.get("/user/checklogin", {
+      await api.get("/admin/checkadmin", {
         withCredentials: true
       })
       setIsLoggedIn(true)
@@ -35,7 +34,7 @@ export function AdminProvider({ children }) {
   async function loginUser() {
     try {
       const res = await api.post(
-        "/user/login",
+        "/admin/adminlogin",
         data,
         { withCredentials: true }
       )
@@ -53,7 +52,7 @@ export function AdminProvider({ children }) {
   //  LOGOUT
   async function logoutUser() {
     try {
-      await api.get("/user/logout", {
+      await api.get("/admin/adminlogout", {
         withCredentials: true
       })
 

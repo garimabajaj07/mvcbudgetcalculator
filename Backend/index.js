@@ -5,6 +5,7 @@ import UserRouting from "./routes/userRoutes.js"
 import cookieParser from "cookie-parser"
 import productRouter from "./routes/productRoute.js"
 import cartRoutes from "./routes/cartRoutes.js"
+import adminRoutes from "./admin/router/adminrouter.js"
 import "dotenv/config"
 
 const app = express()
@@ -28,5 +29,6 @@ await connectDB()
 app.use("/product", productRouter)
 app.use("/user", UserRouting)
 app.use("/cart", cartRoutes)
+app.use("/admin", adminRoutes)
 
 app.listen(Port, ()=> console.log("Server started at", Port))

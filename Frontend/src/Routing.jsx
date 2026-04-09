@@ -17,6 +17,7 @@ import ResetPassword from './ResetPassword'
 import AdminLogin from './admin pages/AdminLogin'
 import AdminHome from './admin pages/AdminHome'
 import { AdminProvider } from './AdminContext'
+import ProtectAdmin from './admin pages/ProtectAdmin'
 
 const navigator = createBrowserRouter([
     {
@@ -77,12 +78,18 @@ const navigator = createBrowserRouter([
             element: <ResetPassword />
         },
         {
-            path: "/admin/login",
-            element:<AdminLogin/>
+            path: "admin/login",
+            element:
+
+                <AdminLogin />
+
         },
         {
             path: "/admin/home",
-            element:<AdminHome/>
+            element:
+                <ProtectAdmin>
+                    <AdminHome />
+                </ProtectAdmin>
         }
 
         ]
@@ -93,14 +100,14 @@ const navigator = createBrowserRouter([
 export default function Routing() {
     return (
         <>
-        <AdminProvider>
+            <AdminProvider>
 
-            <AuthProvider>
-                <CartProvider>
-                    <RouterProvider router={navigator}></RouterProvider>
-                </CartProvider>
-            </AuthProvider>
-        </AdminProvider>
+                <AuthProvider>
+                    <CartProvider>
+                        <RouterProvider router={navigator}></RouterProvider>
+                    </CartProvider>
+                </AuthProvider>
+            </AdminProvider>
         </>
     )
 }
