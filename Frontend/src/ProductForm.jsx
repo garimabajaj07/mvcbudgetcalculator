@@ -1,101 +1,154 @@
 import React, { useState } from "react"
-import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import api from "../axios"
 
 export default function ProductForm() {
 
-    const navigate=useNavigate()
+  const navigate = useNavigate()
 
-    const [data, setData] = useState({
-        name: "",
-        description: "",
-        price: ""
+  const [data, setData] = useState({
+    name: "",
+    description: ""
+  })
+
+  const [variants, setVariants] = useState([
+    { color: "", size: "", price: "", images: [] }
+  ])
+
+  function handleChange(e) {
+    const { name, value } = e.target
+    setData(prev => ({ ...prev, [name]: value }))
+  }
+
+  function handleVariantChange(index, e) {
+    const { name, value } = e.target
+
+    const updated = [...variants]
+    updated[index][name] = value
+
+    setVariants(updated)
+  }
+
+  function handleImageChange(index, e) {
+    const files = Array.from(e.target.files)
+
+    const updated = [...variants]
+    updated[index].images = files
+
+    setVariants(updated)
+  }
+
+  function addVariant() {
+    setVariants([
+      ...variants,
+      { color: "", size: "", price: "", images: [] }
+    ])
+  }
+
+  async function handleSubmit(e) {
+  e.preventDefault()
+
+  const formData = new FormData()
+
+  formData.append("name", data.name)
+  formData.append("description", data.description)
+
+  //  filtering variants
+  const validVariants = variants.filter(
+    v => v.color && v.size && v.price
+  )
+
+  //  sending data 
+  const variantsData = validVariants.map(v => ({
+    color: v.color,
+    size: v.size,
+    price: Number(v.price)
+  }))
+
+  formData.append("variants", JSON.stringify(variantsData))
+
+  //  attaching images 
+  validVariants.forEach((variant, index) => {
+    if (variant.images && variant.images.length > 0) {
+      variant.images.forEach(file => {
+        formData.append(`images_${index}`, file)
+      })
+    }
+  })
+
+  try {
+    const res = await api.post("/product/addproduct", formData, {
+      withCredentials: true
     })
 
-    const [images, setImages] = useState([])
+    alert(res.data.message)
+    navigate("/showproducts")
 
-    function handleChange(e) {
-        const { name, value } = e.target
-        setData(prev => ({ ...prev, [name]: value }))
-    }
+  } catch (error) {
+    console.log(error)
+  }
+}
 
-    function handleImageChange(e) {
-        setImages(e.target.files)
-    }
+  return (
+    <div className="container">
+      <form onSubmit={handleSubmit}>
 
-    async function handleSubmit(e) {
-        e.preventDefault()
+        <input
+          type="text"
+          name="name"
+          placeholder="Product Name"
+          onChange={handleChange}
+        />
 
-        const formData = new FormData()
+        <textarea
+          name="description"
+          placeholder="Description"
+          onChange={handleChange}
+        />
 
-        formData.append("name", data.name)
-        formData.append("description", data.description)
-        formData.append("price", data.price)
+        <h3>Variants</h3>
 
-        for (let i = 0; i < images.length; i++) {
-            formData.append("images", images[i])
-        }
+        {variants.map((variant, index) => (
+          <div key={index} style={{ border: "1px solid #ccc", margin: "10px", padding: "10px" }}>
 
-        try {
-            const res = await api.post(
-                "/product/addproduct",
-                formData,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data"
-                    }
-                }
-            )
+            <input
+              type="text"
+              name="color"
+              placeholder="Color"
+              onChange={(e) => handleVariantChange(index, e)}
+            />
 
-            alert(res.data.message)
+            <input
+              type="text"
+              name="size"
+              placeholder="Size"
+              onChange={(e) => handleVariantChange(index, e)}
+            />
 
-            setData({
-                name: "",
-                description: "",
-                price: ""
-            })
+            <input
+              type="number"
+              name="price"
+              placeholder="Price"
+              onChange={(e) => handleVariantChange(index, e)}
+            />
 
-            navigate("/showproducts")
-            
+            <input
+              type="file"
+              multiple
+              onChange={(e) => handleImageChange(index, e)}
+            />
 
-        } catch (error) {
-            console.log(error)
-        }
-    }
+          </div>
+        ))}
 
-    return (
-        <div className="container">
-            <form onSubmit={handleSubmit}>
+        <button type="button" onClick={addVariant}>
+          + Add Variant
+        </button>
 
-                <input
-                    type="text"
-                    name="name"
-                    placeholder="Product Name"
-                    onChange={handleChange}
-                />
+        <br /><br />
 
-                <textarea
-                    name="description"
-                    placeholder="Description"
-                    onChange={handleChange}
-                />
-
-                <input
-                    type="number"
-                    name="price"
-                    placeholder="Price"
-                    onChange={handleChange}
-                />
-
-                <input
-                    type="file"
-                    multiple
-                    onChange={handleImageChange}
-                />
-
-                <button type="submit">Add Product</button>
-            </form>
-        </div>
-    )
+        <button type="submit">Add Product</button>
+      </form>
+    </div>
+  )
 }

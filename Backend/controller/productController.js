@@ -1,23 +1,70 @@
 import Product from "../model/productSchema.js"
 
+// export async function addProduct(req, res) {
+//   try {
+//     const { name, description, price } = req.body
+
+//     const imagePaths = req.files.map(file => file.filename)
+
+//     const product = new Product({
+//       name,
+//       description,
+//       price,
+//       images: imagePaths
+//     })
+
+//     await product.save()
+
+//     res.json({ message: "Product added successfully" })
+
+//   } catch (error) {
+//     res.status(500).json({ message: error.message })
+//   }
+// }
 export async function addProduct(req, res) {
   try {
-    const { name, description, price } = req.body
+    const { name, description, variants } = req.body  
 
-    const imagePaths = req.files.map(file => file.filename)
+    // parse variants
+    let parsedVariants = JSON.parse(variants)
+
+    const files = req.files || []
+
+    // attach images to correct variant
+    parsedVariants = parsedVariants.filter(v => v.color && v.size && v.price) // remove empty variants
+      .map((variant, index) => {
+
+        const variantImages = files
+          .filter(file => file.fieldname === `images_${index}`)
+          .map(file => file.filename)
+
+        return {
+          color: variant.color,
+          size: variant.size,
+          price: Number(variant.price),
+          images: variantImages
+        }
+      })
+
+    // safety check
+    if (parsedVariants.length === 0) {
+      return res.status(400).json({
+        message: "At least one valid variant is required"
+      })
+    }
 
     const product = new Product({
       name,
       description,
-      price,
-      images: imagePaths
+      variants: parsedVariants
     })
 
     await product.save()
 
-    res.json({ message: "Product added successfully" })
+    res.json({ message: "Product added successfully", product })
 
   } catch (error) {
+    console.log(error)
     res.status(500).json({ message: error.message })
   }
 }

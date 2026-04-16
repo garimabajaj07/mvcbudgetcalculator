@@ -1,17 +1,32 @@
 import React from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useCart } from "./CartContext"
+import api from "../axios"
 
 export default function Header() {
 
-  const { cart } = useCart()
+  const { cart, clearCart } = useCart()
+  const navigate=useNavigate()
 
   // calculate total quantity
   let count = 0
   cart.forEach(item => {
     count += item.quantity
   })
+  async function handleLogout() {
+    try {
+      await api.get("/user/logout", {
+        withCredentials: true
+      })
 
+      clearCart()
+
+      navigate("/login")
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <div className="header">
       <h2>MyShop</h2>
@@ -22,7 +37,9 @@ export default function Header() {
           Cart ({count})
         </Link>
         <Link to="/login">Login</Link>
-        <Link to="/logout">Logout</Link>
+        <button onClick={handleLogout}>
+          Logout
+        </button>
       </div>
     </div>
   )

@@ -25,7 +25,7 @@ export default function Login() {
       })
 
       alert(res.data.message)
-      navigate("/records")
+      navigate("/showproducts")
     }
   }
 

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react"
-import axios from "axios"
 import { Link } from "react-router-dom"
-import "./App.css"
 import api from "../axios"
+import "./App.css"
 
 export default function ShowProducts() {
 
@@ -22,24 +21,35 @@ export default function ShowProducts() {
   }, [])
 
   return (
-  <div className="container">
-    <div className="product-grid">
-      {products.map(product => (
-        <Link key={product._id} to={`/singleproduct/${product._id}`}>
-          
-          <div className="product-card">
+    <div className="container">
+      <div className="product-grid">
+        {products.map(product => {
 
-            <img src={`${import.meta.env.VITE_BASEURL}/uploads/${product.images[0]}`} />
+          const firstVariant = product.variants?.[0]
 
-            <h3>{product.name}</h3>
-            <p>{product.description}</p>
-            <p className="price">₹ {product.price}</p>
+          return (
+            <Link key={product._id} to={`/singleproduct/${product._id}`}>
 
-          </div>
+              <div className="product-card">
 
-        </Link>
-      ))}
+                <img
+                  src={`${import.meta.env.VITE_BASEURL}/uploads/${firstVariant?.images?.[0]}`}
+                  alt={product.name}
+                />
+
+                <h3>{product.name}</h3>
+                <p>{product.description}</p>
+
+                <p className="price">
+                  ₹ {firstVariant?.price}
+                </p>
+
+              </div>
+
+            </Link>
+          )
+        })}
+      </div>
     </div>
-  </div>
-)
+  )
 }

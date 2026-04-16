@@ -1,92 +1,133 @@
-import axios from 'axios'
-import React, { useState } from 'react'
-import { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
-import { useCart } from './CartContext'
-import api from '../axios'
+import React, { useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
+import api from "../axios"
+import { useCart } from "./CartContext"
 
 export default function SingleProduct() {
-    const { id } = useParams()
-    const [product, setProduct] = useState(null)
-    const { cart, addToCart, increaseQuantity, decreaseQuantity } = useCart()
 
-    let quantity = 0
+  const { id } = useParams()
 
-    const cartItem = cart.find(item => item.productId._id === id)
+  const [product, setProduct] = useState(null)
+  const [selectedVariant, setSelectedVariant] = useState(null)
 
-    if (cartItem) {
-        quantity = cartItem.quantity
+  const { cart, addToCart, increaseQuantity, decreaseQuantity } = useCart()
+
+  // find quantity based on variant
+  let quantity = 0
+
+  const cartItem = cart.find(item =>
+    item.productId === id &&
+    item.variant?.color === selectedVariant?.color &&
+    item.variant?.size === selectedVariant?.size
+  )
+
+  if (cartItem) {
+    quantity = cartItem.quantity
+  }
+
+  useEffect(() => {
+    fetchSingleProduct()
+  }, [id])
+
+  async function fetchSingleProduct() {
+    try {
+      const response = await api.get(`/product/singleproduct/${id}`)
+      setProduct(response.data)
+
+    } catch (error) {
+      console.log(error)
     }
+  }
 
-    useEffect(() => { fetchSingleProduct(id) },
-        [id])
-
-    async function fetchSingleProduct() {
-        try {
-            const response = await api.get(`/product/singleproduct/${id}`,{
-                withCredentials:true
-            })
-            console.log(response.data);
-
-            setProduct(response.data)
-
-
-        } catch (error) {
-            console.log(error);
-
-        }
-
+  // set default variant
+  useEffect(() => {
+    if (product?.variants?.length) {
+      setSelectedVariant(product.variants[0])
     }
+  }, [product])
 
-    function handleIncrease() {
-        if (quantity === 0) {
-            addToCart(product._id)
-        } else {
-            increaseQuantity(product._id)
-        }
+  function handleIncrease() {
+    if (quantity === 0) {
+      addToCart(product._id, selectedVariant)
+    } else {
+      increaseQuantity(product._id, selectedVariant)
     }
+  }
 
-    function handleDecrease() {
-        if (quantity > 0) {
-            decreaseQuantity(product._id)
-        }
+  function handleDecrease() {
+    if (quantity > 0) {
+      decreaseQuantity(product._id, selectedVariant)
     }
-    
+  }
 
-    if (!product) return <p>Loading...</p>
-    return (
-        <div className="container">
-            <div className="single-product">
+  if (!product || !selectedVariant) return <p>Loading...</p>
 
-                <div>
-                    {product.images.map((img, index) => (
-                        <img
-                            key={index}
-                            src={`${import.meta.env.VITE_BASEURL}/uploads/${img}`}
-                        />
-                    ))}
-                </div>
+  return (
+    <div className="container">
+      <div className="single-product">
 
-                <div>
-                    <h2>{product.name}</h2>
-                    <p>{product.description}</p>
-                    <p className="price">₹ {product.price}</p>
-
-                    {quantity === 0 ? (
-                        <button onClick={() => addToCart(product._id)}>
-                            Add to Cart
-                        </button>
-                    ) : (
-                        <div className="quantity-box">
-                            <button onClick={handleDecrease}>-</button>
-                            <button>{quantity}</button>
-                            <button onClick={handleIncrease}>+</button>
-                        </div>
-                    )}
-
-                </div>
-
-            </div>
+        {/* Images */}
+        <div>
+          {selectedVariant.images.map((img, index) => (
+            <img
+              key={index}
+              src={`${import.meta.env.VITE_BASEURL}/uploads/${img}`}
+              alt="product"
+            />
+          ))}
         </div>
-    )
+
+        {/* Details */}
+        <div>
+
+          <h2>{product.name}</h2>
+          <p>{product.description}</p>
+
+          <p className="price">
+            ₹ {selectedVariant.price}
+          </p>
+
+          {/* COLOR SELECTION */}
+          <div>
+            <h4>Select Color:</h4>
+            {product.variants.map((v, index) => (
+              <button
+                key={index}
+                onClick={() => setSelectedVariant(v)}
+              >
+                {v.color}
+              </button>
+            ))}
+          </div>
+
+          {/* SIZE SELECTION */}
+          <div>
+            <h4>Select Size:</h4>
+            {product.variants.map((v, index) => (
+              <button
+                key={index}
+                onClick={() => setSelectedVariant(v)}
+              >
+                {v.size}
+              </button>
+            ))}
+          </div>
+
+          {/* CART */}
+          {quantity === 0 ? (
+            <button onClick={() => addToCart(product._id, selectedVariant)}>
+              Add to Cart
+            </button>
+          ) : (
+            <div className="quantity-box">
+              <button onClick={handleDecrease}>-</button>
+              <button>{quantity}</button>
+              <button onClick={handleIncrease}>+</button>
+            </div>
+          )}
+
+        </div>
+      </div>
+    </div>
+  )
 }

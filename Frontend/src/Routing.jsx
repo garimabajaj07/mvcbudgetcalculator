@@ -8,7 +8,6 @@ import ProductForm from './ProductForm'
 import ShowProducts from './ShowProducts'
 import SingleProduct from './SingleProduct'
 import ProtectedRoute from './ProtectedRoute'
-import Logout from './Logout'
 import Cart from './Cart'
 import { CartProvider } from './CartContext'
 import { AuthProvider } from './AuthContext'
@@ -18,6 +17,7 @@ import AdminLogin from './admin pages/AdminLogin'
 import AdminHome from './admin pages/AdminHome'
 import { AdminProvider } from './AdminContext'
 import ProtectAdmin from './admin pages/ProtectAdmin'
+import ProductTable from './admin pages/ProductTable'
 
 const navigator = createBrowserRouter([
     {
@@ -28,25 +28,23 @@ const navigator = createBrowserRouter([
             element: <App />
         },
         {
-            path: "records",
+            path: "admin/records",
             element:
-                <ProtectedRoute>
+                <ProtectAdmin>
                     <Records />
-                </ProtectedRoute>
+                </ProtectAdmin>
         },
         {
             path: "login",
             element:
-
                 <Login />
-
         },
         {
             path: "addproduct",
             element:
-                <ProtectedRoute>
+                <ProtectAdmin>
                     <ProductForm />
-                </ProtectedRoute>
+                </ProtectAdmin>
         },
         {
             path: "showproducts",
@@ -55,10 +53,6 @@ const navigator = createBrowserRouter([
         {
             path: "singleproduct/:id",
             element: <SingleProduct />
-        },
-        {
-            path: "logout",
-            element: <Logout />
         },
         {
             path: "cart",
@@ -85,11 +79,16 @@ const navigator = createBrowserRouter([
 
         },
         {
-            path: "/admin/home",
+            path: "admin/home",
             element:
                 <ProtectAdmin>
                     <AdminHome />
                 </ProtectAdmin>
+        },
+        {
+            path: "admin/product-table",
+            element:
+                <ProductTable />
         }
 
         ]
@@ -101,7 +100,6 @@ export default function Routing() {
     return (
         <>
             <AdminProvider>
-
                 <AuthProvider>
                     <CartProvider>
                         <RouterProvider router={navigator}></RouterProvider>

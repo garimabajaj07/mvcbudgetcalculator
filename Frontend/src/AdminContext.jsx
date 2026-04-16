@@ -33,9 +33,7 @@ export function AdminProvider({ children }) {
   // LOGIN
   async function loginUser() {
     try {
-      const res = await api.post(
-        "/admin/adminlogin",
-        data,
+      const res = await api.post("/admin/adminlogin", data,
         { withCredentials: true }
       )
 

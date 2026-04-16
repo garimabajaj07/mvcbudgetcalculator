@@ -18,8 +18,8 @@ export default function Cart() {
       {cart.map(item => (
         <div className="cart-item" key={item._id}>
           <div>
-            <h3>{item.productId.name}</h3>
-            <p>₹ {item.productId.price}</p>
+            <h3>{item.productId?.name}</h3>
+            <p>₹ {item.productId?.price}</p>
             <p>Qty: {item.quantity}</p>
           </div>
 

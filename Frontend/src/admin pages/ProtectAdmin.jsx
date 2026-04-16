@@ -16,7 +16,7 @@ export default function ProtectAdmin({ children }) {
             const response = await api.get("/admin/checkadmin",
                 { withCredentials: true }
             )
-            console.log(response);
+            // console.log(response);
 
 
             if (response.status === 200) {

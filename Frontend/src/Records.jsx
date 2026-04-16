@@ -1,5 +1,3 @@
-import axios from 'axios';
-import React from 'react'
 import { useState } from 'react';
 import { useEffect } from 'react'
 import api from '../axios';
@@ -13,7 +11,7 @@ export default function Records() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await api.get("/user/records",
+                const response = await api.get("/admin/records",
                     { withCredentials: true }
                 )
                 console.log(response);
@@ -31,7 +29,7 @@ export default function Records() {
 
     async function handleDelete(id) {
         try {
-            const response = await api.delete(`/user/deleteuser/${id}`,
+            const response = await api.delete(`/admin/deleteuser/${id}`,
                 { withCredentials: true }
             )
             console.log(response);
@@ -61,7 +59,7 @@ export default function Records() {
     //update user
     async function handleUpdate() {
         try {
-            const response = await api.put(`/user/edituser/${editUser._id}`,
+            const response = await api.put(`/admin/edituser/${editUser._id}`,
                 editUser,
                 { withCredentials: true }
             )

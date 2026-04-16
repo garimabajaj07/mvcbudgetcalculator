@@ -53,16 +53,6 @@ export async function submit(req, res) {
 
 }
 
-export async function fetchRecords(req, res) {
-    try {
-        const allUsers = await UserModel.find()
-        res.json(allUsers)
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: error.message })
-    }
-}
 
 export async function login(req, res) {
     try {
@@ -99,50 +89,6 @@ export async function login(req, res) {
     }
 }
 
-export async function deleteUser(req, res) {
-    try {
-        const { id } = req.params
-        if (!id) {
-            return res.status(400).json({ message: "id not provided" })
-        }
-
-        const userToDelete = await UserModel.findById(id)
-        if (!userToDelete) {
-            return res.status(400).json({ message: "id not found" })
-        }
-
-        await UserModel.findByIdAndDelete(id)
-        res.json({ message: "deleted" })
-
-    } catch (error) {
-        res.status(500).json({ message: error.message })
-    }
-
-}
-
-export async function editUser(req, res) {
-    try {
-        const { id } = req.params
-        if (!id) {
-            return res.status(400).json({ message: "id not provided" })
-        }
-
-        const userToUpdate = await UserModel.findById(id)
-        if (!userToUpdate) {
-            return res.status(400).json({ message: "user not found" })
-        }
-
-        const body = req.body
-        await UserModel.findByIdAndUpdate(id, body, { new: true })
-        res.json({ message: "updated" })
-
-
-    } catch (error) {
-        res.status(500).json({ message: error.message })
-
-    }
-
-}
 
 export async function logout(req,res){
 
@@ -152,6 +98,12 @@ export async function logout(req,res){
         sameSite: process.env.SAME_SITE, // Prevent CSRF attacks
         maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
     })
+    res.clearCookie("tokenadmin", {
+            httpOnly: true,
+            secure: true,
+            sameSite: process.env.SAME_SITE
+        })
+
 
     res.json({ message: "Logged out successfully" })
 }

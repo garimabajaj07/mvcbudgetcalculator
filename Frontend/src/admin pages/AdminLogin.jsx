@@ -24,7 +24,7 @@ export default function AdminLogin() {
       })
 
       alert(res.data.message)
-      navigate("/records")
+      navigate("/admin/home")
     }
   }
 
