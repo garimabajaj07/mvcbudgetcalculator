@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import api from "../axios"
 import "./App.css"
+import { useCart } from "./CartContext"
 
 export default function ShowProducts() {
 
   const [products, setProducts] = useState([])
+  const { fetchCart } = useCart()
 
   useEffect(() => {
     async function fetchProducts() {
@@ -18,6 +20,7 @@ export default function ShowProducts() {
     }
 
     fetchProducts()
+    fetchCart()
   }, [])
 
   return (
