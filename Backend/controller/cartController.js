@@ -4,24 +4,28 @@ import Cart from "../model/cartSchema.js"
 export async function addToCart(req, res) {
     try {
         const userId = req.user.id
-        const { productId } = req.body
+        const { productId, variantId } = req.body
+        console.log(variantId);
 
         let cart = await Cart.findOne({ userId })
+
 
         if (!cart) {
             cart = new Cart({
                 userId,
-                items: [{ productId, quantity: 1 }]
+                items: [{ productId, variantId, quantity: 1 }]
             })
         } else {
             const index = cart.items.findIndex(
-                item => item.productId.toString() === productId
+                item => item.productId.toString() === productId &&
+                    item.variantId &&
+                    item.variantId.toString() === variantId
             )
 
             if (index > -1) {
                 cart.items[index].quantity += 1
             } else {
-                cart.items.push({ productId, quantity: 1 })
+                cart.items.push({ productId, variantId, quantity: 1 })
             }
         }
 
@@ -37,13 +41,19 @@ export async function addToCart(req, res) {
 // GET CART
 export async function getCart(req, res) {
     try {
-        
+
         const userId = req.user.id
 
         const cart = await Cart.findOne({ userId })
             .populate("items.productId")
 
-        res.json(cart || { items: [] })
+        if (!cart) {
+            res.json({ items: [] })
+        }
+        // REMOVE ITEMS WHERE PRODUCT IS DELETED / NULL
+        cart.items = cart.items.filter(item => item.productId)
+
+        res.json(cart)
 
     } catch (error) {
         res.status(500).json({ message: error.message })
@@ -54,7 +64,7 @@ export async function getCart(req, res) {
 export async function decreaseQuantity(req, res) {
     try {
         const userId = req.user.id
-        const { productId } = req.body
+        const { productId, variantId } = req.body
 
         const cart = await Cart.findOne({ userId })
 
@@ -63,7 +73,9 @@ export async function decreaseQuantity(req, res) {
         }
 
         const index = cart.items.findIndex(
-            item => item.productId.toString() === productId
+            item => item.productId.toString() === productId &&
+                item.variantId &&
+                item.variantId.toString() === variantId
         )
 
         if (index > -1) {
@@ -87,27 +99,32 @@ export async function decreaseQuantity(req, res) {
 //remove item
 
 export async function removeFromCart(req, res) {
-  try {
-    const userId = req.user.id
-    const { productId } = req.params
+    try {
+        const userId = req.user.id
+        const { productId, variantId } = req.params
 
-    const cart = await Cart.findOne({ userId })
+        const cart = await Cart.findOne({ userId })
 
-    if (!cart) {
-      return res.status(404).json({ message: "Cart not found" })
+        if (!cart) {
+            return res.status(404).json({ message: "Cart not found" })
+        }
+
+        // remove item
+
+        cart.items = cart.items.filter(
+
+            item =>
+                !(item.productId.toString() === productId &&
+                    item.variantId &&
+                    item.variantId.toString() === variantId)
+        )
+
+        await cart.save()
+
+        res.json({ message: "Item removed" })
+
+    } catch (error) {
+        res.status(500).json({ message: error.message })
     }
-
-    // remove item
-    cart.items = cart.items.filter(
-      item => item.productId.toString() !== productId
-    )
-
-    await cart.save()
-
-    res.json({ message: "Item removed" })
-
-  } catch (error) {
-    res.status(500).json({ message: error.message })
-  }
 
 }

@@ -24,11 +24,13 @@ export function CartProvider({ children }) {
     fetchCart()
   }, [])
 
-  async function addToCart(productId) {
+  async function addToCart(productId, variantId) {
+    console.log(variantId);
+    
     try {
       await api.post(
         "/cart/add",
-        { productId },
+        { productId, variantId},
         { withCredentials: true }
       )
 
@@ -38,11 +40,11 @@ export function CartProvider({ children }) {
     }
   }
 
-  async function decreaseQuantity(productId) {
+  async function decreaseQuantity(productId, variantId) {
     try {
       await api.post(
         "/cart/decrease",
-        { productId },
+        { productId, variantId },
         { withCredentials: true }
       )
 
@@ -52,11 +54,11 @@ export function CartProvider({ children }) {
     }
   }
 
-  async function increaseQuantity(productId) {
+  async function increaseQuantity(productId,variantId) {
     try {
       await api.post(
         "/cart/add",
-        { productId },
+        { productId, variantId },
         { withCredentials: true }
       )
 
@@ -65,10 +67,10 @@ export function CartProvider({ children }) {
       console.log(error)
     }
   }
-  async function removeFromCart(productId) {
+  async function removeFromCart(productId,variantId) {
     try {
       await api.delete(
-        `/cart/remove/${productId}`,
+        `/cart/remove/${productId}/${variantId}`,
         { withCredentials: true }
       )
 

@@ -16,9 +16,8 @@ export default function SingleProduct() {
   let quantity = 0
 
   const cartItem = cart.find(item =>
-    item.productId === id &&
-    item.variant?.color === selectedVariant?.color &&
-    item.variant?.size === selectedVariant?.size
+    item.productId?._id === id &&
+    item.variantId === selectedVariant?._id
   )
 
   if (cartItem) {
@@ -48,15 +47,15 @@ export default function SingleProduct() {
 
   function handleIncrease() {
     if (quantity === 0) {
-      addToCart(product._id, selectedVariant)
+      addToCart(product._id, selectedVariant._id)
     } else {
-      increaseQuantity(product._id, selectedVariant)
+      increaseQuantity(product._id, selectedVariant._id)
     }
   }
 
   function handleDecrease() {
     if (quantity > 0) {
-      decreaseQuantity(product._id, selectedVariant)
+      decreaseQuantity(product._id, selectedVariant._id)
     }
   }
 
@@ -115,7 +114,7 @@ export default function SingleProduct() {
 
           {/* CART */}
           {quantity === 0 ? (
-            <button onClick={() => addToCart(product._id, selectedVariant)}>
+            <button onClick={() => addToCart(product._id, selectedVariant._id)}>
               Add to Cart
             </button>
           ) : (

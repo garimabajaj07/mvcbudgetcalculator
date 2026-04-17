@@ -7,6 +7,6 @@ const cartRoutes = Router()
 cartRoutes.post("/add", checkToken, addToCart)
 cartRoutes.get("/", checkToken, getCart)
 cartRoutes.post("/decrease", checkToken, decreaseQuantity)
-cartRoutes.delete("/remove/:productId", checkToken, removeFromCart)
+cartRoutes.delete("/remove/:productId/:variantId", checkToken, removeFromCart)
 
 export default cartRoutes
