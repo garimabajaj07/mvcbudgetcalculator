@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react"
 import api from "../../axios"
-import { useNavigate } from "react-router-dom"
+import { data, useNavigate } from "react-router-dom"
 
-export default function ProductTable() {
+export default function SellerProductList() {
 
   const [products, setProducts] = useState([])
   const [selected, setSelected] = useState([])
+  const [loading, setLoading] = useState(true)
+
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -14,14 +16,18 @@ export default function ProductTable() {
 
   async function fetchProducts() {
     try {
-      const res = await api.get("/product/showproducts")
+      const res = await api.get("/seller/myproducts", {
+        withCredentials: true
+      })
       setProducts(res.data)
     } catch (error) {
       console.log(error)
+    } finally {
+      setLoading(false)
     }
   }
 
-  // Toggle single checkbox
+  // Toggle checkbox
   function handleCheckbox(id) {
     if (selected.includes(id)) {
       setSelected(selected.filter(item => item !== id))
@@ -30,11 +36,10 @@ export default function ProductTable() {
     }
   }
 
-  // Select All
+  // Select all
   function handleSelectAll(e) {
     if (e.target.checked) {
-      const allIds = products.map(p => p._id)
-      setSelected(allIds)
+      setSelected(products.map(p => p._id))
     } else {
       setSelected([])
     }
@@ -43,26 +48,51 @@ export default function ProductTable() {
   // Delete selected
   async function handleDelete() {
     try {
-      await api.post(
-        "/admin/delete-multiple",
-        { ids: selected },
-        { withCredentials: true }
+      await api.delete(
+        "/seller/delete-multiple",
+        {
+          data: { ids: selected },
+          withCredentials: true
+        }
       )
 
       alert("Products deleted successfully")
-      fetchProducts()
       setSelected([])
+      fetchProducts()
 
     } catch (error) {
       console.log(error)
     }
   }
 
+  // Loading state
+  if (loading) return <h2>Loading products...</h2>
+
+  // Empty state
+  if (products.length === 0) {
+    return (
+      <div className="container">
+        <h2>No products added yet</h2>
+        <button onClick={() => navigate("/seller/addproduct")}>
+          + Add Product
+        </button>
+      </div>
+    )
+  }
+
   return (
     <div className="container">
-      <h2>Product Table</h2>
+      <h2>Your Products</h2>
 
-      <button onClick={handleDelete} disabled={selected.length === 0}>
+      <button onClick={() => navigate("/seller/addproduct")}>
+        + Add Product
+      </button>
+
+      <button
+        onClick={handleDelete}
+        disabled={selected.length === 0}
+        style={{ marginLeft: "10px" }}
+      >
         Delete Selected
       </button>
 
@@ -83,6 +113,7 @@ export default function ProductTable() {
             <th>Name</th>
             <th>Description</th>
             <th>Price</th>
+            <th>Actions</th>
           </tr>
         </thead>
 
@@ -118,8 +149,11 @@ export default function ProductTable() {
                 <td>{product.name}</td>
                 <td>{product.description}</td>
                 <td>₹ {price}</td>
+
                 <td>
-                  <button onClick={() => navigate(`/admin/edit/${product._id}`)}>
+                  <button
+                    onClick={() => navigate(`/seller/edit/${product._id}`)}
+                  >
                     Edit
                   </button>
                 </td>

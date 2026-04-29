@@ -7,6 +7,7 @@ import productRouter from "./routes/productRoute.js"
 import cartRoutes from "./routes/cartRoutes.js"
 import adminRoutes from "./admin/router/adminrouter.js"
 import "dotenv/config"
+import SellerRouting from "./seller/routes/sellerRouter.js"
 // import bcrypt from "bcrypt"
 // const hashedpassword = await bcrypt.hash("12345678", 10)
 // console.log(hashedpassword);
@@ -33,5 +34,6 @@ app.use("/product", productRouter)
 app.use("/user", UserRouting)
 app.use("/cart", cartRoutes)
 app.use("/admin", adminRoutes)
+app.use("/seller", SellerRouting)
 
 app.listen(Port, () => console.log("Server started at", Port))

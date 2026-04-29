@@ -18,6 +18,14 @@ import AdminHome from './admin pages/AdminHome'
 import { AdminProvider } from './AdminContext'
 import ProtectAdmin from './admin pages/ProtectAdmin'
 import ProductTable from './admin pages/ProductTable'
+import EditProduct from './EditProduct'
+import SellerRegister from './seller pages/SellerRegister'
+import SellerLogin from './seller pages/SellerLogin'
+import { SellerProvider } from './seller pages/SellerContext'
+import SellerAddProduct from './seller pages/SellerAddProduct'
+import SellerDashboard from './seller pages/SellerDashboard'
+import ProtectSeller from './seller pages/ProtectSeller'
+import SellerProductList from './seller pages/SellerProductList'
 
 const navigator = createBrowserRouter([
     {
@@ -89,7 +97,43 @@ const navigator = createBrowserRouter([
             path: "admin/product-table",
             element:
                 <ProductTable />
-        }
+        },
+        {
+            path: "admin/edit/:id",
+            element:
+                <EditProduct />
+        },
+        {
+            path: "seller/register",
+            element:
+                <SellerRegister />
+        },
+        {
+            path: "seller/login",
+            element:
+                <SellerLogin />
+        },
+        {
+            path: "seller/dashboard",
+            element:
+                <ProtectSeller>
+                    <SellerDashboard />
+                </ProtectSeller>
+        },
+        {
+            path: "seller/addproduct",
+            element:
+                <ProtectSeller>
+                    <SellerAddProduct />
+                </ProtectSeller>
+        },
+         {
+            path: "seller/productlist",
+            element:
+                <ProtectSeller>
+                    <SellerProductList />
+                </ProtectSeller>
+        },
 
         ]
 
@@ -99,13 +143,15 @@ const navigator = createBrowserRouter([
 export default function Routing() {
     return (
         <>
-            <AdminProvider>
-                <AuthProvider>
-                    <CartProvider>
-                        <RouterProvider router={navigator}></RouterProvider>
-                    </CartProvider>
-                </AuthProvider>
-            </AdminProvider>
+            <SellerProvider>
+                <AdminProvider>
+                    <AuthProvider>
+                        <CartProvider>
+                            <RouterProvider router={navigator}></RouterProvider>
+                        </CartProvider>
+                    </AuthProvider>
+                </AdminProvider>
+            </SellerProvider>
         </>
     )
 }

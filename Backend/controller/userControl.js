@@ -78,7 +78,7 @@ export async function login(req, res) {
         res.cookie("token", userToken, {
             httpOnly: true,
             secure: true,
-            sameSite:  process.env.SAME_SITE,
+            sameSite: process.env.SAME_SITE,
             maxAge: 60 * 60 * 1000
         })
         res.json({ message: "Login successful" })
@@ -90,7 +90,7 @@ export async function login(req, res) {
 }
 
 
-export async function logout(req,res){
+export async function logout(req, res) {
 
     res.clearCookie("token", {
         httpOnly: true,
@@ -99,10 +99,15 @@ export async function logout(req,res){
         maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
     })
     res.clearCookie("tokenadmin", {
-            httpOnly: true,
-            secure: true,
-            sameSite: process.env.SAME_SITE
-        })
+        httpOnly: true,
+        secure: true,
+        sameSite: process.env.SAME_SITE
+    })
+    res.clearCookie("sellertoken", {
+        httpOnly: true,
+        secure: true,
+        sameSite: process.env.SAME_SITE
+    })
 
 
     res.json({ message: "Logged out successfully" })

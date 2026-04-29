@@ -1,26 +1,5 @@
 import Product from "../model/productSchema.js"
 
-// export async function addProduct(req, res) {
-//   try {
-//     const { name, description, price } = req.body
-
-//     const imagePaths = req.files.map(file => file.filename)
-
-//     const product = new Product({
-//       name,
-//       description,
-//       price,
-//       images: imagePaths
-//     })
-
-//     await product.save()
-
-//     res.json({ message: "Product added successfully" })
-
-//   } catch (error) {
-//     res.status(500).json({ message: error.message })
-//   }
-// }
 export async function addProduct(req, res) {
   try {
     const { name, description, variants } = req.body  
@@ -115,6 +94,49 @@ export async function deleteProduct(req, res) {
 
   } catch (error) {
     console.log(error)
+    res.status(500).json({ message: error.message })
+  }
+}
+export async function editProduct(req, res) {
+  try {
+    const { id } = req.params
+    const { name, description, variants } = req.body
+
+    const parsedVariants = JSON.parse(variants)
+
+    const product = await Product.findById(id)
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" })
+    }
+
+    // update basic fields
+    product.name = name
+    product.description = description
+
+    // handle images for variants
+    let imageIndex = 0
+
+    const updatedVariants = parsedVariants.map((variant, i) => {
+      const files = req.files.filter(file =>
+        file.fieldname === `images_${i}`
+      )
+
+      const images = files.map(file => file.filename)
+
+      return {
+        ...variant,
+        images: images.length > 0 ? images : product.variants[i]?.images || []
+      }
+    })
+
+    product.variants = updatedVariants
+
+    await product.save()
+
+    res.json({ message: "Product updated successfully" })
+
+  } catch (error) {
     res.status(500).json({ message: error.message })
   }
 }

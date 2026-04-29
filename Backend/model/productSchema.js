@@ -12,7 +12,12 @@ const productSchema = new mongoose.Schema({
       stock: { type: Number, default: 0 }
 
     }
-  ]
+  ],
+  sellerId: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: "User",
+  required: true
+}
 })
 
 const Product = mongoose.model("product", productSchema)
