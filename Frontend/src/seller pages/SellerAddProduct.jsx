@@ -82,7 +82,7 @@ export default function SellerAddProduct() {
     })
 
     alert(res.data.message)
-    navigate("/showproducts")
+    navigate("/seller/productlist")
 
   } catch (error) {
     console.log(error)
