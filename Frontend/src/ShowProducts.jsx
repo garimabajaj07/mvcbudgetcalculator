@@ -5,6 +5,9 @@ import "./App.css"
 import { useCart } from "./CartContext"
 
 export default function ShowProducts() {
+  useEffect(() => {
+    document.title = "All Products"
+  }, [])
 
   const [products, setProducts] = useState([])
   const { fetchCart } = useCart()
@@ -36,7 +39,7 @@ export default function ShowProducts() {
               <div className="product-card">
 
                 <img
-                  src={`${import.meta.env.VITE_BASEURL}/uploads/${firstVariant?.images?.[0]}`}
+                  src={firstVariant?.images?.[0]}
                   alt={product.name}
                 />
 

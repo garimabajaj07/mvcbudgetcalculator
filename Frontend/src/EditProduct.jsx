@@ -3,6 +3,9 @@ import { useParams, useNavigate } from "react-router-dom"
 import api from "../axios"
 
 export default function EditProduct() {
+  useEffect(() => {
+    document.title = "Edit your product"
+  }, [])
 
   const { id } = useParams()
   const navigate = useNavigate()

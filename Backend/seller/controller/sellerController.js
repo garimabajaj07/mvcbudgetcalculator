@@ -110,7 +110,7 @@ export async function sellerAddProduct(req, res) {
 
                 const variantImages = files
                     .filter(file => file.fieldname === `images_${index}`)
-                    .map(file => file.filename)
+                    .map(file => file.path)
 
                 return {
                     color: variant.color,

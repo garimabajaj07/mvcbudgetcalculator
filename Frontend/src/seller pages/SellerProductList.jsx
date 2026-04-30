@@ -3,6 +3,9 @@ import api from "../../axios"
 import { data, useNavigate } from "react-router-dom"
 
 export default function SellerProductList() {
+  useEffect(() => {
+    document.title = "Seller Products"
+  }, [])
 
   const [products, setProducts] = useState([])
   const [selected, setSelected] = useState([])
@@ -123,7 +126,7 @@ export default function SellerProductList() {
             const firstVariant = product.variants?.[0]
 
             const imageUrl = firstVariant?.images?.[0]
-              ? `${import.meta.env.VITE_BASEURL}/uploads/${firstVariant.images[0]}`
+              ? firstVariant.images[0]
               : "https://via.placeholder.com/60"
 
             const price = firstVariant?.price || "N/A"

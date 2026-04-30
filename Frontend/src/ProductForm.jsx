@@ -1,8 +1,11 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import api from "../axios"
 
 export default function ProductForm() {
+  useEffect(() => {
+    document.title = "Add Product"
+  }, [])
 
   const navigate = useNavigate()
 

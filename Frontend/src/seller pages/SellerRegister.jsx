@@ -1,9 +1,12 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from "react-router-dom"
 import "../App.css"
 import api from '../../axios'
 
 export default function SellerRegister() {
+  useEffect(() => {
+    document.title = "Seller Registeration"
+  }, [])
 
   const [data, setData] = useState({
     name: "",
@@ -55,8 +58,8 @@ export default function SellerRegister() {
         <input name='username' placeholder="Username" value={data.username} onChange={handleChange} />
         <input name='email' type="email" placeholder="Email" value={data.email} onChange={handleChange} />
         <input name='password' type="password" placeholder="Password" value={data.password} onChange={handleChange} />
-        <input name='phoneNo' placeholder="Phone" maxLength={10} value={data.phoneNo} onChange={handleChange} />
-        <input name='aadharNo' type='text' placeholder="Aadhar No." maxLength={12} value={data.aadharNo} onChange={handleChange} />
+        <input name='phoneNo' placeholder="Phone" maxLength={10} value={data.phoneNo} onChange={handleChange} inputMode='nnumeric' />
+        <input name='aadharNo' type='text' placeholder="Aadhar No." maxLength={12} value={data.aadharNo} onChange={handleChange} inputMode='numeric'/>
         <input name='shopName' placeholder='Shop Name' value={data.shopName} onChange={handleChange} />
 
         <button type='submit'>Register</button>

@@ -1,6 +1,5 @@
 import React from 'react'
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import App from './App'
 import Records from './Records'
 import OutletComponent from "./OutletComponent"
 import Login from './Login'
@@ -26,6 +25,7 @@ import SellerAddProduct from './seller pages/SellerAddProduct'
 import SellerDashboard from './seller pages/SellerDashboard'
 import ProtectSeller from './seller pages/ProtectSeller'
 import SellerProductList from './seller pages/SellerProductList'
+import Register from './Register'
 
 const navigator = createBrowserRouter([
     {
@@ -33,7 +33,7 @@ const navigator = createBrowserRouter([
         element: <OutletComponent />,
         children: [{
             index: true,
-            element: <App />
+            element: <ShowProducts />
         },
         {
             path: "admin/records",
@@ -55,8 +55,8 @@ const navigator = createBrowserRouter([
                 </ProtectAdmin>
         },
         {
-            path: "showproducts",
-            element: <ShowProducts />
+            path: "register",
+            element: <Register />
         },
         {
             path: "singleproduct/:id",

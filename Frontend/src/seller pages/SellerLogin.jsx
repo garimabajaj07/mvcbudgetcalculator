@@ -1,7 +1,11 @@
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useSeller } from "./SellerContext"
+import { useEffect } from "react"
 
 export default function SellerLogin() {
+  useEffect(() => {
+    document.title = "Seller Login"
+  }, [])
 
   const navigate = useNavigate()
 
@@ -56,6 +60,9 @@ export default function SellerLogin() {
           onClick={() => navigate("/forgot-password")}
         >
           Forgot Password?
+        </p>
+        <p>
+          Or <Link to="/seller/register"> Register?</Link>
         </p>
 
         <button type="submit">Login</button>

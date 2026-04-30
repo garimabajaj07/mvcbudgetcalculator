@@ -3,6 +3,9 @@ import api from "../../axios"
 import { useNavigate } from "react-router-dom"
 
 export default function ProductTable() {
+  useEffect(() => {
+    document.title = "Product Table"
+  }, [])
 
   const [products, setProducts] = useState([])
   const [selected, setSelected] = useState([])

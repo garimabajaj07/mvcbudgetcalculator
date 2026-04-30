@@ -122,7 +122,7 @@ export async function editProduct(req, res) {
         file.fieldname === `images_${i}`
       )
 
-      const images = files.map(file => file.filename)
+      const images = files.map(file => file.path)
 
       return {
         ...variant,

@@ -1,10 +1,12 @@
-import React from 'react'
-import { useNavigate } from "react-router-dom"
+import React, { useEffect } from 'react'
+import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from './AuthContext'
 import { useCart } from './CartContext'
 
 export default function Login() {
-
+useEffect(() => {
+    document.title = "User Login"
+  }, [])
   const navigate = useNavigate()
 
   const { data, setData, error, loginUser } = useAuth()
@@ -58,6 +60,9 @@ export default function Login() {
           onClick={() => navigate("/forgot-password")}
         >
           Forgot Password?
+        </p>
+        <p>
+          Or <Link to="/"> Register?</Link>
         </p>
 
         <button type="submit">Login</button>

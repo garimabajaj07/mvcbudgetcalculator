@@ -2,12 +2,15 @@ import React, { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import api from "../axios"
 import { useCart } from "./CartContext"
+import useTitle from "./hooks/UseTitle"
 
 export default function SingleProduct() {
+
 
   const { id } = useParams()
 
   const [product, setProduct] = useState(null)
+  useTitle(product?.name || "Loading...")
   const [selectedVariant, setSelectedVariant] = useState(null)
 
   const { cart, addToCart, increaseQuantity, decreaseQuantity } = useCart()
@@ -45,6 +48,7 @@ export default function SingleProduct() {
     }
   }, [product])
 
+
   function handleIncrease() {
     if (quantity === 0) {
       addToCart(product._id, selectedVariant._id)
@@ -70,7 +74,7 @@ export default function SingleProduct() {
           {selectedVariant.images.map((img, index) => (
             <img
               key={index}
-              src={`${import.meta.env.VITE_BASEURL}/uploads/${img}`}
+              src={img}
               alt="product"
             />
           ))}

@@ -4,6 +4,9 @@ import api from '../axios';
 
 
 export default function Records() {
+    useEffect(() => {
+    document.title = "User Records"
+  }, [])
 
     const [tabdata, setTabData] = useState([])
     const [editUser, setEditUser] = useState(null)

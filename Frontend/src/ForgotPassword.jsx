@@ -1,8 +1,11 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import axios from "axios"
 import api from "../axios"
 
 export default function ForgotPassword() {
+  useEffect(() => {
+    document.title = "Forgot password"
+  }, [])
 
   const [email, setEmail] = useState("")
   const [message, setMessage] = useState("")

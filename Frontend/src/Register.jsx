@@ -1,10 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from "axios"
 import { Link } from "react-router-dom"
 import "./App.css"
 import api from '../axios'
 
-export default function App() {
+export default function Register() {
+  useEffect(() => {
+    document.title = "User Registration"
+  }, [])
 
   const [data, setData] = useState({
     name: "",
@@ -55,7 +58,7 @@ export default function App() {
         <input name='username' placeholder="Username" value={data.username} onChange={handleChange} />
         <input name='email' type="email" placeholder="Email" value={data.email} onChange={handleChange} />
         <input name='password' type="password" placeholder="Password" value={data.password} onChange={handleChange} />
-        <input name='phoneNo' placeholder="Phone" maxLength={10} value={data.phoneNo} onChange={handleChange} />
+        <input name='phoneNo' inputMode='numeric' placeholder="Phone" maxLength={10} value={data.phoneNo} onChange={handleChange} />
 
         <select name="gender" value={data.gender} onChange={handleChange}>
           <option value="">Select Gender</option>

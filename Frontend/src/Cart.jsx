@@ -1,7 +1,10 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { useCart } from "./CartContext"
 
 export default function Cart() {
+  useEffect(() => {
+    document.title = "Your Cart"
+  }, [])
   const { cart, removeFromCart } = useCart()
 
   let total = 0

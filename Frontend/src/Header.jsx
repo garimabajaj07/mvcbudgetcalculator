@@ -32,6 +32,7 @@ export default function Header() {
       <h2>MyShop</h2>
 
       <div>
+        <Link to="/register">Register</Link>
         <Link to="/showproducts">Products</Link>
         <Link to="/cart">
           Cart ({count})

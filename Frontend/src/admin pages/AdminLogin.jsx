@@ -1,8 +1,11 @@
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useAdmin } from "../AdminContext"
+import { useEffect } from "react"
 
 export default function AdminLogin() {
-
+  useEffect(() => {
+    document.title = "Admin Login"
+  }, [])
   const navigate = useNavigate()
 
   const { data, setData, error, loginUser } = useAdmin()
