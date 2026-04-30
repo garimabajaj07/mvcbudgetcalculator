@@ -33,7 +33,7 @@ export function AdminProvider({ children }) {
   // LOGIN
   async function loginUser() {
     try {
-      const res = await api.post("/admin/adminlogin", data,
+      const res = await api.post("/admin/login", data,
         { withCredentials: true }
       )
 
@@ -47,20 +47,6 @@ export function AdminProvider({ children }) {
     }
   }
 
-  //  LOGOUT
-  async function logoutUser() {
-    try {
-      await api.get("/admin/adminlogout", {
-        withCredentials: true
-      })
-
-      setIsLoggedIn(false)
-
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   return (
     <AdminContext.Provider value={{
       data,
@@ -68,8 +54,7 @@ export function AdminProvider({ children }) {
       error,
       setError,
       isLoggedIn,
-      loginUser,
-      logoutUser
+      loginUser
     }}>
       {children}
     </AdminContext.Provider>

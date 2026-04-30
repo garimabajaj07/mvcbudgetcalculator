@@ -3,7 +3,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import Records from './Records'
 import OutletComponent from "./OutletComponent"
 import Login from './Login'
-import ProductForm from './ProductForm'
 import ShowProducts from './ShowProducts'
 import SingleProduct from './SingleProduct'
 import ProtectedRoute from './ProtectedRoute'
@@ -36,26 +35,20 @@ const navigator = createBrowserRouter([
             element: <ShowProducts />
         },
         {
-            path: "admin/records",
+            path: "admin/user/records",
             element:
                 <ProtectAdmin>
                     <Records />
                 </ProtectAdmin>
         },
         {
-            path: "login",
+            path: "user/login",
             element:
                 <Login />
         },
+       
         {
-            path: "addproduct",
-            element:
-                <ProtectAdmin>
-                    <ProductForm />
-                </ProtectAdmin>
-        },
-        {
-            path: "register",
+            path: "user/register",
             element: <Register />
         },
         {
@@ -63,7 +56,7 @@ const navigator = createBrowserRouter([
             element: <SingleProduct />
         },
         {
-            path: "cart",
+            path: "user/cart",
             element:
 
                 <ProtectedRoute>
@@ -94,12 +87,12 @@ const navigator = createBrowserRouter([
                 </ProtectAdmin>
         },
         {
-            path: "admin/product-table",
+            path: "admin/product/records",
             element:
                 <ProductTable />
         },
         {
-            path: "admin/edit/:id",
+            path: "product/edit/:id",
             element:
                 <EditProduct />
         },
@@ -121,14 +114,14 @@ const navigator = createBrowserRouter([
                 </ProtectSeller>
         },
         {
-            path: "seller/addproduct",
+            path: "seller/produt/add",
             element:
                 <ProtectSeller>
                     <SellerAddProduct />
                 </ProtectSeller>
         },
          {
-            path: "seller/productlist",
+            path: "seller/product/list",
             element:
                 <ProtectSeller>
                     <SellerProductList />

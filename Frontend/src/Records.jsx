@@ -14,7 +14,7 @@ export default function Records() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await api.get("/admin/records",
+                const response = await api.get("/admin/user/records",
                     { withCredentials: true }
                 )
                 console.log(response);
@@ -32,7 +32,7 @@ export default function Records() {
 
     async function handleDelete(id) {
         try {
-            const response = await api.delete(`/admin/deleteuser/${id}`,
+            const response = await api.delete(`/admin/user/delete/${id}`,
                 { withCredentials: true }
             )
             console.log(response);
@@ -62,7 +62,7 @@ export default function Records() {
     //update user
     async function handleUpdate() {
         try {
-            const response = await api.put(`/admin/edituser/${editUser._id}`,
+            const response = await api.put(`/admin/user/edit/${editUser._id}`,
                 editUser,
                 { withCredentials: true }
             )

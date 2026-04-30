@@ -19,7 +19,7 @@ export default function SellerProductList() {
 
   async function fetchProducts() {
     try {
-      const res = await api.get("/seller/myproducts", {
+      const res = await api.get("/seller/product/all", {
         withCredentials: true
       })
       setProducts(res.data)

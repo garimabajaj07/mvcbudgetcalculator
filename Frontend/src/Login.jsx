@@ -28,7 +28,7 @@ useEffect(() => {
       })
 
       alert(res.data.message)
-      navigate("/showproducts")
+      navigate("/")
     }
   }
 
@@ -62,7 +62,7 @@ useEffect(() => {
           Forgot Password?
         </p>
         <p>
-          Or <Link to="/"> Register?</Link>
+          Or <Link to="/user/register"> Register?</Link>
         </p>
 
         <button type="submit">Login</button>

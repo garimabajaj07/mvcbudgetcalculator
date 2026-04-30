@@ -9,8 +9,8 @@ SellerRouting.post("/login", loginSeller)
 SellerRouting.get("/checkseller", checkSeller, (req, res) => {
     res.status(200).json({ message: "Seller Authenticated" })
 })
-SellerRouting.post("/addproduct", checkSeller, upload.any(), sellerAddProduct)
-SellerRouting.get("/myproducts", checkSeller, myProducts)
+SellerRouting.post("/product/add", checkSeller, upload.any(), sellerAddProduct)
+SellerRouting.get("/product/all", checkSeller, myProducts)
 SellerRouting.delete("/delete-multiple", checkSeller, deleteProducts)
 
 export default SellerRouting

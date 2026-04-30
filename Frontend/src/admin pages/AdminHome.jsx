@@ -7,8 +7,8 @@ export default function AdminHome() {
   }, [])
   return (
     <>
-    <Link to="/admin/records">Records</Link>
-    <Link to="/admin/product-table">Product-list</Link>
+    <Link to="/admin/user/records">Records</Link>
+    <Link to="/admin/product/records">Product-list</Link>
     </>
   )
 }

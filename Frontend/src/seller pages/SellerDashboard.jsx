@@ -7,8 +7,8 @@ export default function SellerDashboard() {
   }, [])
 return (
     <>
-    <Link to="/seller/addproduct">Add Product</Link>
-    <Link to="/seller/productlist">Product-list</Link>
+    <Link to="/seller/product/add">Add Product</Link>
+    <Link to="/seller/product/list">Product-list</Link>
     </>
   )
 }

@@ -80,7 +80,7 @@ export default function SellerAddProduct() {
   })
 
   try {
-    const res = await api.post("/seller/addproduct", formData, {
+    const res = await api.post("/seller/product/add", formData, {
       withCredentials: true
     })
 

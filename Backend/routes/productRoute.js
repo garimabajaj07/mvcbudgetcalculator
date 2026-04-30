@@ -4,9 +4,9 @@ import { addProduct, deleteProduct, editProduct, showProducts, singleProductDeta
 
 const productRouter = Router()
 
-productRouter.post("/addproduct", upload.any(), addProduct)
-productRouter.get("/showproducts", showProducts)
-productRouter.get("/singleproduct/:id", singleProductDetail)
-productRouter.delete("/deleteproduct/:id", deleteProduct)
-productRouter.put( "/editproduct/:id", upload.any(), editProduct)
+productRouter.post("/add", upload.any(), addProduct)
+productRouter.get("/show", showProducts)
+productRouter.get("/single/:id", singleProductDetail)
+productRouter.delete("/delete/:id", deleteProduct)
+productRouter.put( "/edit/:id", upload.any(), editProduct)
 export default productRouter

@@ -33,7 +33,7 @@ export default function SingleProduct() {
 
   async function fetchSingleProduct() {
     try {
-      const response = await api.get(`/product/singleproduct/${id}`)
+      const response = await api.get(`/product/single/${id}`)
       setProduct(response.data)
 
     } catch (error) {

@@ -85,7 +85,7 @@ export default function EditProduct() {
     })
 
     try {
-      await api.put(`/product/editproduct/${id}`, formData, {
+      await api.put(`/product/edit/${id}`, formData, {
         withCredentials: true
       })
 

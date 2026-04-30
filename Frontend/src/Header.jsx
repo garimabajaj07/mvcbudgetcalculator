@@ -21,7 +21,7 @@ export default function Header() {
 
       clearCart()
 
-      navigate("/login")
+      navigate("/user/login")
 
     } catch (error) {
       console.log(error)
@@ -32,12 +32,12 @@ export default function Header() {
       <h2>MyShop</h2>
 
       <div>
-        <Link to="/register">Register</Link>
-        <Link to="/showproducts">Products</Link>
-        <Link to="/cart">
+        <Link to="/user/register">Register</Link>
+        <Link to="/">Products</Link>
+        <Link to="/user/cart">
           Cart ({count})
         </Link>
-        <Link to="/login">Login</Link>
+        <Link to="/user/login">Login</Link>
         <button onClick={handleLogout}>
           Logout
         </button>

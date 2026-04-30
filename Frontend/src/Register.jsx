@@ -36,7 +36,7 @@ export default function Register() {
     setError("")
 
     try {
-      const res = await api.post("/user/submit", data)
+      const res = await api.post("/user/register", data)
       alert(res.data.message)
     } catch (err) {
       setError(err.response?.data?.message)
@@ -72,7 +72,7 @@ export default function Register() {
 
         
         <br />
-        <Link to="/login">Login</Link>
+        <Link to="/user/login">Login</Link>
       </form>
     </div>
   )

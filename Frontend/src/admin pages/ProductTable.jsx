@@ -17,7 +17,7 @@ export default function ProductTable() {
 
   async function fetchProducts() {
     try {
-      const res = await api.get("/product/showproducts")
+      const res = await api.get("/product/show")
       setProducts(res.data)
     } catch (error) {
       console.log(error)
@@ -122,7 +122,7 @@ export default function ProductTable() {
                 <td>{product.description}</td>
                 <td>₹ {price}</td>
                 <td>
-                  <button onClick={() => navigate(`/admin/edit/${product._id}`)}>
+                  <button onClick={() => navigate(`/product/edit/${product._id}`)}>
                     Edit
                   </button>
                 </td>
