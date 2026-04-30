@@ -9,24 +9,31 @@
 body {
   background: #f4f6f9;
 }
-
+ul {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+}
 /* HEADER */
-.header {
+.header,
+.footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #4CAF50;
+  background: #4caf50;
   padding: 15px 30px;
   color: white;
 }
 
-.header a {
+.header a,
+.footer a {
   color: white;
-  text-decoration: none;
   margin-left: 20px;
 }
 
-.header a:hover {
+.header a:hover,
+.footer a:hover {
   text-decoration: underline;
 }
 
@@ -47,10 +54,11 @@ form {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-input, select {
+input,
+select {
   padding: 10px;
   border-radius: 6px;
   border: 1px solid #ccc;
@@ -60,7 +68,7 @@ button {
   padding: 10px;
   border: none;
   border-radius: 6px;
-  background: #4CAF50;
+  background: #4caf50;
   color: white;
   cursor: pointer;
 }
@@ -86,7 +94,7 @@ button:hover {
   background: white;
   padding: 15px;
   border-radius: 10px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
   transition: 0.3s;
 }
 
@@ -102,7 +110,7 @@ button:hover {
 }
 
 .price {
-  color: #4CAF50;
+  color: #4caf50;
   font-weight: bold;
 }
 
@@ -159,7 +167,7 @@ button:hover {
   background: white;
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 table {
@@ -168,7 +176,7 @@ table {
 }
 
 th {
-  background: #4CAF50;
+  background: #4caf50;
   color: white;
   padding: 12px;
   text-align: center;
@@ -202,7 +210,7 @@ tr:hover {
   background: white;
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .edit-form h3 {
@@ -232,6 +240,17 @@ tr:hover {
   color: #777;
 }
 
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 3;
+}
+
+.footer ul {
+  display: flex;
+}
+
 /* ================= RESPONSIVE DESIGN ================= */
 
 /* TABLET (<= 992px) */
@@ -255,10 +274,8 @@ tr:hover {
   }
 }
 
-
 /* MOBILE (<= 768px) */
 @media (max-width: 768px) {
-
   /* HEADER */
   .header {
     flex-direction: column;
@@ -302,15 +319,14 @@ tr:hover {
     font-size: 14px;
   }
 
-  th, td {
+  th,
+  td {
     padding: 8px;
   }
 }
 
-
 /* SMALL MOBILE (<= 480px) */
 @media (max-width: 480px) {
-
   /* HEADER */
   .header {
     padding: 10px;
