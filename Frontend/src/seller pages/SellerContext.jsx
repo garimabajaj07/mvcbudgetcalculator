@@ -48,7 +48,14 @@ export function SellerProvider({ children }) {
   }
 
   //  LOGOUT
-
+  async function logoutSeller() {
+    try {
+      await api.get("/user/logout", { withCredentials: true })
+      setIsLoggedIn(false)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <SellerContext.Provider value={{
@@ -57,7 +64,8 @@ export function SellerProvider({ children }) {
       error,
       setError,
       isLoggedIn,
-      loginSeller
+      loginSeller,
+      logoutSeller
     }}>
       {children}
     </SellerContext.Provider>

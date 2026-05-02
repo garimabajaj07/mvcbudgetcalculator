@@ -12,7 +12,7 @@ export default function Footer() {
           <Link to="/contact">Contact</Link>
         </li>
         <li>
-          <Link to="">Register as Seller</Link>
+          <Link to="/seller/register">Register as Seller</Link>
         </li>
       </ul>
     </footer>

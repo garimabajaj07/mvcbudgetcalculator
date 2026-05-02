@@ -89,7 +89,9 @@ const navigator = createBrowserRouter([
         {
             path: "admin/product/records",
             element:
+            <ProtectAdmin>
                 <ProductTable />
+            </ProtectAdmin>
         },
         {
             path: "product/edit/:id",
@@ -114,7 +116,7 @@ const navigator = createBrowserRouter([
                 </ProtectSeller>
         },
         {
-            path: "seller/produt/add",
+            path: "seller/product/add",
             element:
                 <ProtectSeller>
                     <SellerAddProduct />

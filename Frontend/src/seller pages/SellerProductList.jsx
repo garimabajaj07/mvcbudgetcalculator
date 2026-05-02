@@ -76,7 +76,7 @@ export default function SellerProductList() {
     return (
       <div className="container">
         <h2>No products added yet</h2>
-        <button onClick={() => navigate("/seller/addproduct")}>
+        <button onClick={() => navigate("/seller/product/add")}>
           + Add Product
         </button>
       </div>
@@ -87,7 +87,7 @@ export default function SellerProductList() {
     <div className="container">
       <h2>Your Products</h2>
 
-      <button onClick={() => navigate("/seller/addproduct")}>
+      <button onClick={() => navigate("/seller/product/add")}>
         + Add Product
       </button>
 

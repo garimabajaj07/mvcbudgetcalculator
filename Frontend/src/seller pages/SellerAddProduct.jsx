@@ -85,7 +85,7 @@ export default function SellerAddProduct() {
     })
 
     alert(res.data.message)
-    navigate("/seller/productlist")
+    navigate("/seller/product/list")
 
   } catch (error) {
     console.log(error)

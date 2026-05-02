@@ -46,6 +46,14 @@ export function AdminProvider({ children }) {
       setIsLoggedIn(false)
     }
   }
+  async function logoutAdmin() {
+  try {
+    await api.get("/user/logout", { withCredentials: true })
+    setIsLoggedIn(false)
+  } catch (error) {
+    console.log(error)
+  }
+}
 
   return (
     <AdminContext.Provider value={{
@@ -54,7 +62,8 @@ export function AdminProvider({ children }) {
       error,
       setError,
       isLoggedIn,
-      loginUser
+      loginUser,
+      logoutAdmin
     }}>
       {children}
     </AdminContext.Provider>

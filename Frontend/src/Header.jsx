@@ -1,46 +1,73 @@
 import React from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useCart } from "./CartContext"
-import api from "../axios"
+import { useAuth } from "./AuthContext"
+import { useAdmin } from "./AdminContext"
+import { useSeller } from "./seller pages/SellerContext"
 
 export default function Header() {
 
-  const { cart, clearCart } = useCart()
-  const navigate=useNavigate()
+  const navigate = useNavigate()
 
-  // calculate total quantity
+  const { cart, clearCart } = useCart()
+
+  const { isLoggedIn: userLoggedIn, logoutUser } = useAuth()
+  const { isLoggedIn: adminLoggedIn, logoutAdmin } = useAdmin()
+  const { isLoggedIn: sellerLoggedIn, logoutSeller } = useSeller()
+
+  // combined login state
+  const isLoggedIn = userLoggedIn || adminLoggedIn || sellerLoggedIn
+
+  // cart count
   let count = 0
   cart.forEach(item => {
     count += item.quantity
   })
+
+  // logout handler
   async function handleLogout() {
     try {
-      await api.get("/user/logout", {
-        withCredentials: true
-      })
+      if (userLoggedIn) await logoutUser()
+      if (adminLoggedIn) await logoutAdmin()
+      if (sellerLoggedIn) await logoutSeller()
 
       clearCart()
 
-      navigate("/user/login")
+      navigate("/")
 
     } catch (error) {
       console.log(error)
     }
   }
+
   return (
     <div className="header">
       <h2>MyShop</h2>
 
       <div>
-        <Link to="/user/register">Register</Link>
+
         <Link to="/">Products</Link>
-        <Link to="/user/cart">
-          Cart ({count})
-        </Link>
-        <Link to="/user/login">Login</Link>
-        <button onClick={handleLogout}>
-          Logout
-        </button>
+
+        {/* Show cart only for user */}
+        {userLoggedIn && (
+          <Link to="/user/cart">
+            Cart ({count})
+          </Link>
+        )}
+
+        {/* LOGIN / LOGOUT TOGGLE */}
+        {!isLoggedIn ? (
+          <>
+            <Link to="/user/login">User Login</Link>
+            <Link to="/admin/login">Admin Login</Link>
+            <Link to="/seller/login">Seller Login</Link>
+          </>
+        ) : (
+          <button onClick={handleLogout}>
+            Logout
+          </button>
+        )}
+
       </div>
     </div>
   )
