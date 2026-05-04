@@ -4,6 +4,7 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import "dotenv/config"
 import Product from "../../model/productSchema.js"
+import SellerModel from "../../seller/model/sellerSchema.js"
 
 export async function adminLogin(req, res) {
     try {
@@ -57,7 +58,8 @@ export async function deleteMultipleProducts(req, res) {
     res.status(500).json({ message: error.message })
   }
 }
-export async function fetchRecords(req, res) {
+//user
+export async function fetchUserRecords(req, res) {
     try {
         const allUsers = await UserModel.find()
         res.json(allUsers)
@@ -110,4 +112,94 @@ export async function editUser(req, res) {
 
     }
 
+}
+export async function blockUser(req, res) {
+  const { id } = req.params
+
+  await UserModel.findByIdAndUpdate(id, {
+    status: "blocked"
+  })
+
+  res.json({ message: "User blocked" })
+}
+export async function unblockUser(req, res) {
+  const { id } = req.params
+
+  await UserModel.findByIdAndUpdate(id, {
+    status: "active"
+  })
+
+  res.json({ message: "User unblocked" })
+}
+//seller
+export async function fetchSellerRecords(req,res){
+ try {
+        const allSellers = await SellerModel.find()
+        res.json(allSellers)
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message })
+    }
+}
+export async function deleteSeller(req, res) {
+    try {
+        const { id } = req.params
+        if (!id) {
+            return res.status(400).json({ message: "id not provided" })
+        }
+
+        const sellerToDelete = await SellerModel.findById(id)
+        if (!sellerToDelete) {
+            return res.status(400).json({ message: "id not found" })
+        }
+
+        await SellerModel.findByIdAndDelete(id)
+        res.json({ message: "deleted" })
+
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+
+}
+export async function editSeller(req, res) {
+    try {
+        const { id } = req.params
+        if (!id) {
+            return res.status(400).json({ message: "id not provided" })
+        }
+
+        const sellerToUpdate = await SellerModel.findById(id)
+        if (!sellerToUpdate) {
+            return res.status(400).json({ message: "seller not found" })
+        }
+
+        const body = req.body
+        await SellerModel.findByIdAndUpdate(id, body, { new: true })
+        res.json({ message: "updated" })
+
+
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+
+    }
+
+}
+export async function blockSeller(req, res) {
+  const { id } = req.params
+
+  await SellerModel.findByIdAndUpdate(id, {
+    status: "blocked"
+  })
+
+  res.json({ message: "Seller blocked" })
+}
+export async function unblockSeller(req, res) {
+  const { id } = req.params
+
+  await SellerModel.findByIdAndUpdate(id, {
+    status: "active"
+  })
+
+  res.json({ message: "User unblocked" })
 }

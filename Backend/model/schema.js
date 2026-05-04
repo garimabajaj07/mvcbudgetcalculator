@@ -13,7 +13,12 @@ const userSchema = new mongoose.Schema({
 
         }
     },
-    gender: { type: String, required: true, enum: ["male", "female"] }
+    gender: { type: String, required: true, enum: ["male", "female"] },
+    status: {
+        type: String,
+        enum: ["active", "blocked"],
+        default: "active"
+    }
 
 })
 

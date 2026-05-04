@@ -37,7 +37,13 @@ const sellerSchema = new mongoose.Schema({
     shopName: {
         type: String,
         required: true
+    },
+    status: {
+        type: String,
+        enum: ["active", "blocked"],
+        default: "active"
     }
+
 
 })
 

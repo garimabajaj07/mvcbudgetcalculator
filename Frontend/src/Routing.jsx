@@ -1,6 +1,5 @@
 import React from 'react'
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import Records from './Records'
 import OutletComponent from "./OutletComponent"
 import Login from './Login'
 import ShowProducts from './ShowProducts'
@@ -24,6 +23,8 @@ import SellerAddProduct from './seller pages/SellerAddProduct'
 import SellerDashboard from './seller pages/SellerDashboard'
 import ProtectSeller from './seller pages/ProtectSeller'
 import SellerProductList from './seller pages/SellerProductList'
+import UserRecords from './UserRecords'
+import SellerRecords from './SellerRecords'
 import Register from './Register'
 
 const navigator = createBrowserRouter([
@@ -38,9 +39,17 @@ const navigator = createBrowserRouter([
             path: "admin/user/records",
             element:
                 <ProtectAdmin>
-                    <Records />
+                    <UserRecords />
                 </ProtectAdmin>
         },
+         {
+            path: "admin/seller/records",
+            element:
+                <ProtectAdmin>
+                    <SellerRecords />
+                </ProtectAdmin>
+        },
+
         {
             path: "user/login",
             element:

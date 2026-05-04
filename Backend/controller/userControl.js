@@ -64,6 +64,9 @@ export async function login(req, res) {
         if (!usernameExists) {
             return res.status(401).json({ message: "User not found" })
         }
+        if (usernameExists.status === "blocked") {
+            return res.status(403).json({ message: "User is blocked by admin" })
+        }
         const matchPassword = await bcrypt.compare(password, usernameExists.password)
         if (!matchPassword) {
             return res.status(401).json({ message: "Invalid password" })
