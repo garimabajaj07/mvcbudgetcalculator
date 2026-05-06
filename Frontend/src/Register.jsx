@@ -48,11 +48,14 @@ export default function Register() {
     })
   }
 
-  return (
-    <div className='container'>
+return (
+  <div className="auth-container">
+    <div className="auth-card">
       <form onSubmit={handleSubmit}>
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        <h2>Register</h2>
+
+        {error && <p className="error">{error}</p>}
 
         <input name='name' placeholder="Name" value={data.name} onChange={handleChange} />
         <input name='username' placeholder="Username" value={data.username} onChange={handleChange} />
@@ -66,14 +69,17 @@ export default function Register() {
           <option value="female">Female</option>
         </select>
 
-          <input type="date" name="dob" value={data.dob} onChange={handleChange} />
+        <input type="date" name="dob" value={data.dob} onChange={handleChange} />
 
         <button type='submit'>Register</button>
 
-        
-        <br />
-        <Link to="/user/login">Login</Link>
+        <div className="auth-links">
+          <span>Already have an account? </span>
+          <Link to="/user/login">Login</Link>
+        </div>
+
       </form>
     </div>
-  )
+  </div>
+)
 }

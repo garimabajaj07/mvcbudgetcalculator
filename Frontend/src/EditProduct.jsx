@@ -4,7 +4,7 @@ import api from "../axios"
 
 export default function EditProduct() {
   useEffect(() => {
-    document.title = "Edit your product"
+    document.title = "Edit Product"
   }, [])
 
   const { id } = useParams()
@@ -24,11 +24,19 @@ export default function EditProduct() {
   async function fetchProduct() {
     try {
       const res = await api.get(`/product/singleproduct/${id}`)
+
       setData({
         name: res.data.name,
         description: res.data.description
       })
-      setVariants(res.data.variants)
+
+      const updatedVariants = res.data.variants.map(v => ({
+        ...v,
+        newImages: []
+      }))
+
+      setVariants(updatedVariants)
+
     } catch (error) {
       console.log(error)
     }
@@ -49,14 +57,14 @@ export default function EditProduct() {
   function handleImageChange(index, e) {
     const files = Array.from(e.target.files)
     const updated = [...variants]
-    updated[index].images = files
+    updated[index].newImages = files
     setVariants(updated)
   }
 
   function addVariant() {
     setVariants([
       ...variants,
-      { color: "", size: "", price: "", images: [] }
+      { color: "", size: "", price: "", images: [], newImages: [] }
     ])
   }
 
@@ -71,14 +79,15 @@ export default function EditProduct() {
     const variantsData = variants.map(v => ({
       color: v.color,
       size: v.size,
-      price: Number(v.price)
+      price: Number(v.price),
+      images: v.images
     }))
 
     formData.append("variants", JSON.stringify(variantsData))
 
     variants.forEach((variant, index) => {
-      if (variant.images) {
-        variant.images.forEach(file => {
+      if (variant.newImages?.length > 0) {
+        variant.newImages.forEach(file => {
           formData.append(`images_${index}`, file)
         })
       }
@@ -90,7 +99,7 @@ export default function EditProduct() {
       })
 
       alert("Product updated successfully")
-      navigate("/admin/product-table")
+      navigate("/admin/product/records")
 
     } catch (error) {
       console.log(error)
@@ -98,67 +107,92 @@ export default function EditProduct() {
   }
 
   return (
-    <div className="container">
-      <h2>Edit Product</h2>
+    <div className="page">
+      <div className="container">
 
-      <form onSubmit={handleSubmit}>
+        <div className="form-card">
+          <h2>Edit Product</h2>
 
-        <input
-          type="text"
-          name="name"
-          value={data.name}
-          onChange={handleChange}
-        />
-
-        <textarea
-          name="description"
-          value={data.description}
-          onChange={handleChange}
-        />
-
-        <h3>Variants</h3>
-
-        {variants.map((variant, index) => (
-          <div key={index} style={{ border: "1px solid #ccc", margin: "10px", padding: "10px" }}>
+          <form onSubmit={handleSubmit} className="form-grid">
 
             <input
               type="text"
-              name="color"
-              value={variant.color}
-              onChange={(e) => handleVariantChange(index, e)}
+              name="name"
+              value={data.name}
+              onChange={handleChange}
+              placeholder="Product Name"
             />
 
-            <input
-              type="text"
-              name="size"
-              value={variant.size}
-              onChange={(e) => handleVariantChange(index, e)}
+            <textarea
+              name="description"
+              value={data.description}
+              onChange={handleChange}
+              placeholder="Product Description"
             />
 
-            <input
-              type="number"
-              name="price"
-              value={variant.price}
-              onChange={(e) => handleVariantChange(index, e)}
-            />
+            <div className="variant-section">
+              <div className="variant-header">
+                <h3>Variants</h3>
+                <button type="button" onClick={addVariant}>
+                  + Add Variant
+                </button>
+              </div>
 
-            <input
-              type="file"
-              multiple
-              onChange={(e) => handleImageChange(index, e)}
-            />
+              {variants.map((variant, index) => (
+                <div className="variant-card" key={index}>
 
-          </div>
-        ))}
+                  <div className="variant-grid">
+                    <input
+                      type="text"
+                      name="color"
+                      value={variant.color}
+                      onChange={(e) => handleVariantChange(index, e)}
+                      placeholder="Color"
+                    />
 
-        <button type="button" onClick={addVariant}>
-          + Add Variant
-        </button>
+                    <input
+                      type="text"
+                      name="size"
+                      value={variant.size}
+                      onChange={(e) => handleVariantChange(index, e)}
+                      placeholder="Size"
+                    />
 
-        <br /><br />
+                    <input
+                      type="number"
+                      name="price"
+                      value={variant.price}
+                      onChange={(e) => handleVariantChange(index, e)}
+                      placeholder="Price"
+                    />
+                  </div>
 
-        <button type="submit">Update Product</button>
-      </form>
+                  {/* Existing Images */}
+                  <div className="image-preview">
+                    {variant.images?.map((img, i) => (
+                      <img key={i} src={img} alt="preview" />
+                    ))}
+                  </div>
+
+                  {/* Upload New */}
+                  <input
+                    type="file"
+                    multiple
+                    onChange={(e) => handleImageChange(index, e)}
+                  />
+
+                </div>
+              ))}
+            </div>
+
+            <button type="submit" className="submit-btn">
+              Update Product
+            </button>
+
+          </form>
+        </div>
+
+      </div>
     </div>
   )
 }

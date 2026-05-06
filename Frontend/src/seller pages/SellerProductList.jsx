@@ -84,6 +84,7 @@ export default function SellerProductList() {
   }
 
   return (
+    <div className="page">
     <div className="container">
       <h2>Your Products</h2>
 
@@ -165,6 +166,7 @@ export default function SellerProductList() {
           })}
         </tbody>
       </table>
+    </div>
     </div>
   )
 }

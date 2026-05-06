@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { Link, useParams, useNavigate } from "react-router-dom"
 import api from "../axios"
 import { useCart } from "./CartContext"
 import useTitle from "./hooks/UseTitle"
+import { useAuth } from "./AuthContext"
 
 export default function SingleProduct() {
 
-
   const { id } = useParams()
+  const navigate = useNavigate()
 
   const [product, setProduct] = useState(null)
-  useTitle(product?.name || "Loading...")
   const [selectedVariant, setSelectedVariant] = useState(null)
 
-  const { cart, addToCart, increaseQuantity, decreaseQuantity } = useCart()
+  useTitle(product?.name || "Loading...")
 
-  // find quantity based on variant
+  const { cart, addToCart, increaseQuantity, decreaseQuantity } = useCart()
+  const { isLoggedIn } = useAuth()
+
   let quantity = 0
 
   const cartItem = cart.find(item =>
@@ -35,21 +37,20 @@ export default function SingleProduct() {
     try {
       const response = await api.get(`/product/single/${id}`)
       setProduct(response.data)
-
     } catch (error) {
       console.log(error)
     }
   }
 
-  // set default variant
   useEffect(() => {
     if (product?.variants?.length) {
       setSelectedVariant(product.variants[0])
     }
   }, [product])
 
-
   function handleIncrease() {
+    if (!isLoggedIn) return navigate("/user/login")
+
     if (quantity === 0) {
       addToCart(product._id, selectedVariant._id)
     } else {
@@ -63,71 +64,88 @@ export default function SingleProduct() {
     }
   }
 
-  if (!product || !selectedVariant) return <p>Loading...</p>
+  if (!product || !selectedVariant) return <p className="container">Loading...</p>
 
   return (
     <div className="container">
-      <div className="single-product">
+      <div className="single-product modern-product">
 
-        {/* Images */}
-        <div>
-          {selectedVariant.images.map((img, index) => (
-            <img
-              key={index}
-              src={img}
-              alt="product"
-            />
-          ))}
+        {/* LEFT: IMAGE SECTION */}
+        <div className="image-section">
+          <img
+            src={selectedVariant.images?.[0]}
+            alt={product.name}
+            className="main-image"
+          />
+
+          <div className="thumbnail-row">
+            {selectedVariant.images.map((img, index) => (
+              <img key={index} src={img} alt="thumb" />
+            ))}
+          </div>
         </div>
 
-        {/* Details */}
-        <div>
+        {/* RIGHT: DETAILS */}
+        <div className="details-section">
 
-          <h2>{product.name}</h2>
-          <p>{product.description}</p>
+          <h1 className="product-title">{product.name}</h1>
 
-          <p className="price">
+          <p className="product-desc">{product.description}</p>
+
+          <p className="price big-price">
             ₹ {selectedVariant.price}
           </p>
 
-          {/* COLOR SELECTION */}
-          <div>
-            <h4>Select Color:</h4>
-            {product.variants.map((v, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedVariant(v)}
-              >
-                {v.color}
-              </button>
-            ))}
+          {/* COLOR */}
+          <div className="variant-group">
+            <h4>Color</h4>
+            <div className="variant-options">
+              {product.variants.map((v, index) => (
+                <button
+                  key={index}
+                  className={
+                    selectedVariant._id === v._id ? "selected variant-btn" : "variant-btn"
+                  }
+                  onClick={() => setSelectedVariant(v)}
+                >
+                  {v.color}
+                </button>
+              ))}
+            </div>
           </div>
 
-          {/* SIZE SELECTION */}
-          <div>
-            <h4>Select Size:</h4>
-            {product.variants.map((v, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedVariant(v)}
-              >
-                {v.size}
-              </button>
-            ))}
+          {/* SIZE */}
+          <div className="variant-group">
+            <h4>Size</h4>
+            <div className="variant-options">
+              {product.variants.map((v, index) => (
+                <button
+                  key={index}
+                  className={
+                    selectedVariant._id === v._id ? "selected variant-btn" : "variant-btn"
+                  }
+                  onClick={() => setSelectedVariant(v)}
+                >
+                  {v.size}
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* CART */}
-          {quantity === 0 ? (
-            <button onClick={() => addToCart(product._id, selectedVariant._id)}>
-              Add to Cart
-            </button>
-          ) : (
-            <div className="quantity-box">
-              <button onClick={handleDecrease}>-</button>
-              <button>{quantity}</button>
-              <button onClick={handleIncrease}>+</button>
-            </div>
-          )}
+          <div className="cart-section">
+            {quantity === 0 ? (
+              <button className="add-btn" onClick={handleIncrease}>
+                Add to Cart
+              </button>
+            ) : (
+              <div className="quantity-box modern-qty">
+                <button onClick={handleDecrease}>−</button>
+                <span>{quantity}</span>
+                <button onClick={handleIncrease}>+</button>
+              </div>
+            )}
+          </div>
 
         </div>
       </div>

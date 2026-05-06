@@ -5,12 +5,13 @@ export default function Cart() {
   useEffect(() => {
     document.title = "Your Cart"
   }, [])
+
   const { cart, removeFromCart } = useCart()
 
   let total = 0
 
   cart.forEach(item => {
-    if (!item.productId || !item.variantId) return   // ✅ prevent crash
+    if (!item.productId || !item.variantId) return
 
     const variant = item.productId.variants.find(
       v => v._id.toString() === item.variantId.toString()
@@ -23,48 +24,90 @@ export default function Cart() {
 
   return (
     <div className="container">
-      <h2>Cart</h2>
+      <h2 className="cart-title">Your Cart</h2>
 
-      {cart.length === 0 && <p className="empty">Cart is empty</p>}
+      {cart.length === 0 ? (
+        <div className="empty-cart">
+          <h3>Your cart feels lonely 🛒</h3>
+          <p>Add some amazing products to get started</p>
+        </div>
+      ) : (
+        <div className="cart-layout">
 
-      {cart.map(item => {
+          {/* LEFT: ITEMS */}
+          <div className="cart-items">
 
-        if (!item.productId || !item.variantId) return null   // ✅ skip broken items
+            {cart.map(item => {
 
-        const variant = item.productId.variants.find(
-          v => v._id.toString() === item.variantId?.toString()
-        )
+              if (!item.productId || !item.variantId) return null
 
-        if (!variant) return null
+              const variant = item.productId.variants.find(
+                v => v._id.toString() === item.variantId?.toString()
+              )
 
-        return (
-          <div className="cart-item" key={item._id}>
-            <div>
-              <h3>{item.productId.name}</h3>
+              if (!variant) return null
 
-              {/* ✅ show variant details */}
-              <p>Color: {variant.color}</p>
-              <p>Size: {variant.size}</p>
+              return (
+                <div className="cart-card" key={item._id}>
 
-              <p>₹ {variant.price}</p>
-              <p>Qty: {item.quantity}</p>
+                  {/* IMAGE */}
+                  <img
+                    src={variant.images?.[0]}
+                    alt={item.productId.name}
+                    className="cart-img"
+                  />
+
+                  {/* DETAILS */}
+                  <div className="cart-info">
+                    <h3>{item.productId.name}</h3>
+
+                    <p className="cart-variant">
+                      {variant.color} • {variant.size}
+                    </p>
+
+                    <p className="cart-price">₹ {variant.price}</p>
+
+                    <p className="cart-qty">
+                      Qty: <strong>{item.quantity}</strong>
+                    </p>
+                  </div>
+
+                  {/* REMOVE */}
+                  <button
+                    className="remove-btn"
+                    onClick={() =>
+                      removeFromCart(item.productId._id, item.variantId)
+                    }
+                  >
+                    Remove
+                  </button>
+                </div>
+              )
+            })}
+
+          </div>
+
+          {/* RIGHT: SUMMARY */}
+          <div className="cart-summary">
+            <h3>Order Summary</h3>
+
+            <div className="summary-row">
+              <span>Total Items</span>
+              <span>{cart.length}</span>
             </div>
 
-            <p
-              onClick={() =>
-                removeFromCart(item.productId._id, item.variantId)
-              }
-              style={{ cursor: "pointer" }}
-            >
-              ❌
-            </p>
-          </div>
-        )
-      })}
+            <div className="summary-row total">
+              <span>Total</span>
+              <span>₹ {total}</span>
+            </div>
 
-      <div className="cart-total">
-        Total: ₹ {total}
-      </div>
+            <button className="checkout-btn">
+              Proceed to Checkout
+            </button>
+          </div>
+
+        </div>
+      )}
     </div>
   )
 }

@@ -92,8 +92,12 @@ export default function SellerAddProduct() {
   }
 }
 
-  return (
-    <div className="container">
+ return (
+  <div className="auth-container">
+    <div className="auth-card">
+
+      <h2>Add Product</h2>
+
       <form onSubmit={handleSubmit}>
 
         <input
@@ -112,8 +116,15 @@ export default function SellerAddProduct() {
         <h3>Variants</h3>
 
         {variants.map((variant, index) => (
-          <div key={index} style={{ border: "1px solid #ccc", margin: "10px", padding: "10px" }}>
-
+          <div
+            key={index}
+            style={{
+              border: "1px solid #E5E7EB",
+              marginBottom: "10px",
+              padding: "10px",
+              borderRadius: "8px"
+            }}
+          >
             <input
               type="text"
               name="color"
@@ -140,7 +151,6 @@ export default function SellerAddProduct() {
               multiple
               onChange={(e) => handleImageChange(index, e)}
             />
-
           </div>
         ))}
 
@@ -148,10 +158,13 @@ export default function SellerAddProduct() {
           + Add Variant
         </button>
 
-        <br /><br />
+        <button type="submit" style={{ marginTop: "10px" }}>
+          Add Product
+        </button>
 
-        <button type="submit">Add Product</button>
       </form>
+
     </div>
-  )
+  </div>
+)
 }

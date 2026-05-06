@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
-import api from "../../axios"
 import { useNavigate } from "react-router-dom"
+import api from "../../axios"
 
 export default function ProductTable() {
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function ProductTable() {
     }
   }
 
-  // Toggle single checkbox
+  // Toggle checkbox
   function handleCheckbox(id) {
     if (selected.includes(id)) {
       setSelected(selected.filter(item => item !== id))
@@ -33,7 +33,7 @@ export default function ProductTable() {
     }
   }
 
-  // Select All
+  // Select all
   function handleSelectAll(e) {
     if (e.target.checked) {
       const allIds = products.map(p => p._id)
@@ -43,7 +43,7 @@ export default function ProductTable() {
     }
   }
 
-  // Delete selected
+  // Delete
   async function handleDelete() {
     try {
       await api.post(
@@ -55,7 +55,6 @@ export default function ProductTable() {
       alert("Products deleted successfully")
       fetchProducts()
       setSelected([])
-
     } catch (error) {
       console.log(error)
     }
@@ -63,74 +62,92 @@ export default function ProductTable() {
 
   return (
     <div className="container">
-      <h2>Product Table</h2>
+      <h2 style={{ marginBottom: "15px" }}>Product Table</h2>
 
-      <button onClick={handleDelete} disabled={selected.length === 0}>
+      <button
+        onClick={handleDelete}
+        disabled={selected.length === 0}
+        style={{ marginBottom: "15px" }}
+      >
         Delete Selected
       </button>
 
-      <table border="1" width="100%" cellPadding="10">
-        <thead>
-          <tr>
-            <th>
-              <input
-                type="checkbox"
-                onChange={handleSelectAll}
-                checked={
-                  products.length > 0 &&
-                  selected.length === products.length
-                }
-              />
-            </th>
-            <th>Image</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Price</th>
-          </tr>
-        </thead>
+      <div className="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>
+                <input
+                  type="checkbox"
+                  onChange={handleSelectAll}
+                  checked={
+                    products.length > 0 &&
+                    selected.length === products.length
+                  }
+                />
+              </th>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Price</th>
+              <th>Action</th>
+            </tr>
+          </thead>
 
-        <tbody>
-          {products.map(product => {
+          <tbody>
+            {products.map(product => {
+              const firstVariant = product.variants?.[0]
 
-            const firstVariant = product.variants?.[0]
+              // ✅ Cloudinary-safe image
+              const imagePath = firstVariant?.images?.[0]
 
-            const imageUrl = firstVariant?.images?.[0]
-              ? `${import.meta.env.VITE_BASEURL}/uploads/${firstVariant.images[0]}`
-              : "https://via.placeholder.com/60"
+              const imageUrl = imagePath
+                ? imagePath.startsWith("http")
+                  ? imagePath
+                  : `${import.meta.env.VITE_BASEURL}/${imagePath}`
+                : "https://via.placeholder.com/60"
 
-            const price = firstVariant?.price || "N/A"
+              const price = firstVariant?.price || "N/A"
 
-            return (
-              <tr key={product._id}>
-                <td>
-                  <input
-                    type="checkbox"
-                    checked={selected.includes(product._id)}
-                    onChange={() => handleCheckbox(product._id)}
-                  />
-                </td>
+              return (
+                <tr key={product._id}>
+                  <td>
+                    <input
+                      type="checkbox"
+                      checked={selected.includes(product._id)}
+                      onChange={() => handleCheckbox(product._id)}
+                    />
+                  </td>
 
-                <td>
-                  <img
-                    src={imageUrl}
-                    width="60"
-                    alt={product.name}
-                  />
-                </td>
+                  <td>
+                    <img
+                      src={imageUrl}
+                      width="60"
+                      alt={product.name}
+                      style={{ borderRadius: "6px" }}
+                      onError={(e) => {
+                        e.target.src = "https://via.placeholder.com/60"
+                      }}
+                    />
+                  </td>
 
-                <td>{product.name}</td>
-                <td>{product.description}</td>
-                <td>₹ {price}</td>
-                <td>
-                  <button onClick={() => navigate(`/product/edit/${product._id}`)}>
-                    Edit
-                  </button>
-                </td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
+                  <td>{product.name}</td>
+                  <td>{product.description}</td>
+                  <td>₹ {price}</td>
+
+                  <td>
+                    <button
+                      onClick={() => navigate(`/product/edit/${product._id}`)}
+                    >
+                      Edit
+                    </button>
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }

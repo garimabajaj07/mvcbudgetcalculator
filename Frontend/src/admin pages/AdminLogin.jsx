@@ -32,9 +32,10 @@ export default function AdminLogin() {
   }
 
   return (
-    <div className="container">
-      <form onSubmit={handleSubmit}>
-        <h2>Login</h2>
+   <div className="auth-container">
+  <div className="auth-card">
+    <form onSubmit={handleSubmit}>
+        <h2>Admin Login</h2>
 
         {error && <p className="error">{error}</p>}
 
@@ -54,16 +55,16 @@ export default function AdminLogin() {
           onChange={handleChange}
         />
 
-        <p
-          style={{ color: "red", cursor: "pointer" }}
-          onClick={() => navigate("/forgot-password")}
-        >
-          Forgot Password?
-        </p>
+         <div className="auth-links">
+            <span className="link-btn" onClick={() => navigate("/forgot-password")}>
+              Forgot Password?
+            </span>
+            </div>
 
         <button type="submit">Login</button>
 
       </form>
+    </div>
     </div>
   )
 }

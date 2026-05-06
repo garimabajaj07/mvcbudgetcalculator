@@ -37,30 +37,28 @@ export default function SellerRecords() {
     }
 
     //  BLOCK / UNBLOCK
-    async function handleBlock(id) {
-        try {
-            await api.put(
-                `/admin/block-seller/${id}`,
-                {},
-                { withCredentials: true }
-            )
+   async function handleBlock(id) {
+  try {
+    const res = await api.put(
+      `/admin/block-seller/${id}`,
+      {},
+      { withCredentials: true }
+    )
 
-            // toggle status in UI
-            setTabData(prev =>
-                prev.map(seller =>
-                    seller._id === id
-                        ? {
-                            ...seller,
-                            status: seller.status === "blocked" ? "active" : "blocked"
-                        }
-                        : seller
-                )
-            )
+    const updatedStatus = res.data.status   //  IMPORTANT
 
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    setTabData(prev =>
+      prev.map(seller =>
+        seller._id === id
+          ? { ...seller, status: updatedStatus }
+          : seller
+      )
+    )
+
+  } catch (error) {
+    console.log(error)
+  }
+}
 
     //  EDIT
     function handleEdit(seller) {

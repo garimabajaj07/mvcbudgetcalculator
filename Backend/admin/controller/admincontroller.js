@@ -113,23 +113,30 @@ export async function editUser(req, res) {
     }
 
 }
-export async function blockUser(req, res) {
-  const { id } = req.params
+//block user
+export async function toggleUserBlock(req, res) {
+  try {
+    const { id } = req.params
 
-  await UserModel.findByIdAndUpdate(id, {
-    status: "blocked"
-  })
+    const user = await UserModel.findById(id)
 
-  res.json({ message: "User blocked" })
-}
-export async function unblockUser(req, res) {
-  const { id } = req.params
+    if (!user) {
+      return res.status(404).json({ message: "User not found" })
+    }
 
-  await UserModel.findByIdAndUpdate(id, {
-    status: "active"
-  })
+    //  REAL TOGGLE
+    user.status = user.status === "blocked" ? "active" : "blocked"
 
-  res.json({ message: "User unblocked" })
+    await user.save()
+
+    res.json({
+      message: "Status updated",
+      status: user.status   // 👈 SEND BACK
+    })
+
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
 }
 //seller
 export async function fetchSellerRecords(req,res){
@@ -185,21 +192,28 @@ export async function editSeller(req, res) {
     }
 
 }
-export async function blockSeller(req, res) {
-  const { id } = req.params
+//block seller
+export async function toggleSellerBlock(req, res) {
+  try {
+    const { id } = req.params
 
-  await SellerModel.findByIdAndUpdate(id, {
-    status: "blocked"
-  })
+    const seller = await SellerModel.findById(id)
 
-  res.json({ message: "Seller blocked" })
-}
-export async function unblockSeller(req, res) {
-  const { id } = req.params
+    if (!seller) {
+      return res.status(404).json({ message: "seller not found" })
+    }
 
-  await SellerModel.findByIdAndUpdate(id, {
-    status: "active"
-  })
+    //  REAL TOGGLE
+    seller.status = seller.status === "blocked" ? "active" : "blocked"
 
-  res.json({ message: "User unblocked" })
+    await seller.save()
+
+    res.json({
+      message: "Status updated",
+      status: seller.status   // 👈 SEND BACK
+    })
+
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
 }

@@ -1,20 +1,22 @@
-import { Link } from "react-router-dom";
+import React from "react"
+import { Link } from "react-router-dom"
 
 export default function Footer() {
   return (
-    <footer className="footer">
-      <p>All rights reserved &copy; {new Date().getFullYear()}</p>
+    <div className="footer">
+      <h3>MyShop</h3>
+      <p>Your one-stop destination for quality products at the best prices.</p>
+
       <ul>
-        <li>
-          <Link to="/about">About</Link>
-        </li>
-        <li>
-          <Link to="/contact">Contact</Link>
-        </li>
-        <li>
-          <Link to="/seller/register">Register as Seller</Link>
-        </li>
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/user/login">User</Link></li>
+        <li><Link to="/seller/login">Seller</Link></li>
+        <li><Link to="/admin/login">Admin</Link></li>
       </ul>
-    </footer>
-  );
+
+      <div className="footer-bottom">
+        <p>© {new Date().getFullYear()} MyShop. All rights reserved.</p>
+      </div>
+    </div>
+  )
 }

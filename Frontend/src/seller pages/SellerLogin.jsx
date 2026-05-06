@@ -33,41 +33,44 @@ export default function SellerLogin() {
   }
 
   return (
-    <div className="container">
-      <form onSubmit={handleSubmit}>
-        <h2>Login</h2>
+    <div className="auth-container">
+      <div className="auth-card">
+          <h2>Seller Login</h2>
+        <form onSubmit={handleSubmit}>
 
-        {error && <p className="error">{error}</p>}
+          {error && <p className="error">{error}</p>}
 
-        <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          value={data.username}
-          onChange={handleChange}
-        />
+          <input
+            type="text"
+            name="username"
+            placeholder="Username"
+            value={data.username}
+            onChange={handleChange}
+          />
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={data.password}
-          onChange={handleChange}
-        />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={data.password}
+            onChange={handleChange}
+          />
 
-        <p
-          style={{ color: "red", cursor: "pointer" }}
-          onClick={() => navigate("/forgot-password")}
-        >
-          Forgot Password?
-        </p>
-        <p>
-          Or <Link to="/seller/register"> Register?</Link>
-        </p>
+          <div className="auth-links">
+            <span className="link-btn" onClick={() => navigate("/forgot-password")}>
+              Forgot Password?
+            </span>
 
-        <button type="submit">Login</button>
+            <span>
+              Don’t have an account?{" "}
+              <Link to="/seller/register">Register</Link>
+            </span>
+          </div>
 
-      </form>
+          <button type="submit">Login</button>
+
+        </form>
+      </div>
     </div>
   )
 }

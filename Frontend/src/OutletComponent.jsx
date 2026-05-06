@@ -1,14 +1,19 @@
-import React from 'react'
-import Header from './Header'
+import Header from "./Header"
 import Footer from "./Footer"
-import { Outlet } from 'react-router-dom'
+import { Outlet } from "react-router-dom"
 
 export default function OutletComponent() {
-    return (
-        <>
-            <Header />
-            <Outlet />
-            <Footer />
-        </>
-    )
+  return (
+    <div className="app-wrapper">
+      
+      <Header />
+
+      <div className="main-content">
+        <Outlet />
+      </div>
+
+      <Footer />
+
+    </div>
+  )
 }

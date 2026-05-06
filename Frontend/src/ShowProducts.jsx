@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import api from "../axios"
-import "./App.css"
 import { useCart } from "./CartContext"
 
 export default function ShowProducts() {
@@ -27,34 +26,53 @@ export default function ShowProducts() {
   }, [])
 
   return (
-    <div className="container">
-      <div className="product-grid">
-        {products.map(product => {
+    <div className="home">
 
-          const firstVariant = product.variants?.[0]
+      {/* HERO SECTION */}
+      <div className="hero">
+        <h1>Discover Amazing Products</h1>
+        <p>Shop the latest trends with unbeatable prices</p>
+      </div>
 
-          return (
-            <Link key={product._id} to={`/singleproduct/${product._id}`}>
+      <div className="container">
 
-              <div className="product-card">
+        <h2 className="section-title">All Products</h2>
 
-                <img
-                  src={firstVariant?.images?.[0]}
-                  alt={product.name}
-                />
+        <div className="product-grid">
+          {products.map(product => {
+            const firstVariant = product.variants?.[0]
 
-                <h3>{product.name}</h3>
-                <p>{product.description}</p>
+            const imageUrl =
+              firstVariant?.images?.[0] ||
+              "https://via.placeholder.com/300"
 
-                <p className="price">
-                  ₹ {firstVariant?.price}
-                </p>
+            return (
+              <Link
+                key={product._id}
+                to={`/singleproduct/${product._id}`}
+                className="product-link"
+              >
+                <div className="product-card">
 
-              </div>
+                  <div className="image-wrapper">
+                    <img src={imageUrl} alt={product.name} />
+                  </div>
 
-            </Link>
-          )
-        })}
+                  <div className="product-info">
+                    <h3>{product.name}</h3>
+                    <p className="desc">{product.description}</p>
+
+                    <p className="price">
+                      ₹ {firstVariant?.price || "N/A"}
+                    </p>
+                  </div>
+
+                </div>
+              </Link>
+            )
+          })}
+        </div>
+
       </div>
     </div>
   )

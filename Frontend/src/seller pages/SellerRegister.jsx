@@ -47,27 +47,80 @@ export default function SellerRegister() {
       phoneNo: "", shopName: "", aadharNo: ""
     })
   }
-
   return (
-    <div className='container'>
+  <div className="auth-container">
+    <div className="auth-card">
       <form onSubmit={handleSubmit}>
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        <h2>Seller Register</h2>
 
-        <input name='name' placeholder="Name" value={data.name} onChange={handleChange} />
-        <input name='username' placeholder="Username" value={data.username} onChange={handleChange} />
-        <input name='email' type="email" placeholder="Email" value={data.email} onChange={handleChange} />
-        <input name='password' type="password" placeholder="Password" value={data.password} onChange={handleChange} />
-        <input name='phoneNo' placeholder="Phone" maxLength={10} value={data.phoneNo} onChange={handleChange} inputMode='nnumeric' />
-        <input name='aadharNo' type='text' placeholder="Aadhar No." maxLength={12} value={data.aadharNo} onChange={handleChange} inputMode='numeric'/>
-        <input name='shopName' placeholder='Shop Name' value={data.shopName} onChange={handleChange} />
+        {error && <p className="error">{error}</p>}
+
+        <input
+          name='name'
+          placeholder="Full Name"
+          value={data.name}
+          onChange={handleChange}
+        />
+
+        <input
+          name='username'
+          placeholder="Username"
+          value={data.username}
+          onChange={handleChange}
+        />
+
+        <input
+          name='email'
+          type="email"
+          placeholder="Email"
+          value={data.email}
+          onChange={handleChange}
+        />
+
+        <input
+          name='password'
+          type="password"
+          placeholder="Password"
+          value={data.password}
+          onChange={handleChange}
+        />
+
+        <input
+          name='phoneNo'
+          placeholder="Phone Number"
+          maxLength={10}
+          value={data.phoneNo}
+          onChange={handleChange}
+          inputMode='numeric'
+        />
+
+        <input
+          name='aadharNo'
+          placeholder="Aadhar Number"
+          maxLength={12}
+          value={data.aadharNo}
+          onChange={handleChange}
+          inputMode='numeric'
+        />
+
+        <input
+          name='shopName'
+          placeholder='Shop Name'
+          value={data.shopName}
+          onChange={handleChange}
+        />
 
         <button type='submit'>Register</button>
 
+        <div className="auth-links">
+          <span>Already have an account? </span>
+          <Link to="/seller/login">Login</Link>
+        </div>
 
-        <br />
-        <Link to="/seller/login">Login</Link>
       </form>
     </div>
-  )
+  </div>
+)
+
 }

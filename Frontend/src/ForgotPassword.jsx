@@ -27,7 +27,8 @@ export default function ForgotPassword() {
   }
 
   return (
-    <div className="container">
+      <div className="auth-container">
+      <div className="auth-card">
       <form onSubmit={handleSubmit}>
         <h2>Forgot Password</h2>
 
@@ -42,6 +43,7 @@ export default function ForgotPassword() {
 
         {message && <p>{message}</p>}
       </form>
+    </div>
     </div>
   )
 }

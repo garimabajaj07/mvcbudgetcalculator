@@ -37,30 +37,28 @@ export default function UserRecords() {
     }
 
     //  BLOCK / UNBLOCK
-    async function handleBlock(id) {
-        try {
-            await api.put(
-                `/admin/block-user/${id}`,
-                {},
-                { withCredentials: true }
-            )
+   async function handleBlock(id) {
+  try {
+    const res = await api.put(
+      `/admin/block-user/${id}`,
+      {},
+      { withCredentials: true }
+    )
 
-            // toggle status in UI
-            setTabData(prev =>
-                prev.map(user =>
-                    user._id === id
-                        ? {
-                            ...user,
-                            status: user.status === "blocked" ? "active" : "blocked"
-                        }
-                        : user
-                )
-            )
+    const updatedStatus = res.data.status   //  IMPORTANT
 
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    setTabData(prev =>
+      prev.map(user =>
+        user._id === id
+          ? { ...user, status: updatedStatus }
+          : user
+      )
+    )
+
+  } catch (error) {
+    console.log(error)
+  }
+}
 
     //  EDIT
     function handleEdit(user) {
