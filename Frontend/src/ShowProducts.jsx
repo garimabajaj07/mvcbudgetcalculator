@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import api from "../axios"
 import { useCart } from "./CartContext"
+import { useWishlist } from "./WishlistContext"
+import { FaHeart, FaRegHeart } from "react-icons/fa"
 
 export default function ShowProducts() {
   useEffect(() => {
@@ -9,12 +11,18 @@ export default function ShowProducts() {
   }, [])
 
   const [products, setProducts] = useState([])
+  const [search, setSearch] = useState("")
   const { fetchCart } = useCart()
-
+  const [category, setCategory] = useState("")
+  const {
+    addToWishlist,
+    removeFromWishlist,
+    isInWishlist
+  } = useWishlist()
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const res = await api.get("/product/show")
+        const res = await api.get(`/product/show?search=${search}&category=${category}`)
         setProducts(res.data)
       } catch (error) {
         console.log(error)
@@ -23,7 +31,7 @@ export default function ShowProducts() {
 
     fetchProducts()
     fetchCart()
-  }, [])
+  }, [search,category])
 
   return (
     <div className="home">
@@ -37,6 +45,41 @@ export default function ShowProducts() {
       <div className="container">
 
         <h2 className="section-title">All Products</h2>
+        <div className="search-filter-container">
+
+          <input
+            type="text"
+            placeholder="Search products..."
+            className="search-input"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+
+          <div className="category-buttons">
+
+            <button onClick={() => setCategory("")}>
+              All
+            </button>
+
+            <button onClick={() => setCategory("Men")}>
+              Men
+            </button>
+
+            <button onClick={() => setCategory("Women")}>
+              Women
+            </button>
+
+            <button onClick={() => setCategory("Shoes")}>
+              Shoes
+            </button>
+
+            <button onClick={() => setCategory("Electronics")}>
+              Electronics
+            </button>
+
+          </div>
+
+        </div>
 
         <div className="product-grid">
           {products.map(product => {
@@ -53,6 +96,23 @@ export default function ShowProducts() {
                 className="product-link"
               >
                 <div className="product-card">
+                  <button
+                    className="wishlist-icon"
+                    onClick={(e) => {
+                      e.preventDefault()
+
+                      if (isInWishlist(product._id)) {
+                        removeFromWishlist(product._id)
+                      } else {
+                        addToWishlist(product._id)
+                      }
+                    }}
+                  >
+                    {isInWishlist(product._id)
+                      ? <FaHeart />
+                      : <FaRegHeart />
+                    }
+                  </button>
 
                   <div className="image-wrapper">
                     <img src={imageUrl} alt={product.name} />
@@ -66,6 +126,7 @@ export default function ShowProducts() {
                       ₹ {firstVariant?.price || "N/A"}
                     </p>
                   </div>
+
 
                 </div>
               </Link>

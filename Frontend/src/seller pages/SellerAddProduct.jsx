@@ -13,6 +13,7 @@ export default function SellerAddProduct() {
     name: "",
     description: ""
   })
+  const [category, setCategory] = useState("")
 
   const [variants, setVariants] = useState([
     { color: "", size: "", price: "", images: [] }
@@ -49,122 +50,129 @@ export default function SellerAddProduct() {
   }
 
   async function handleSubmit(e) {
-  e.preventDefault()
+    e.preventDefault()
 
-  const formData = new FormData()
+    const formData = new FormData()
 
-  formData.append("name", data.name)
-  formData.append("description", data.description)
+    formData.append("name", data.name)
+    formData.append("description", data.description)
+    formData.append("category", category)
 
-  //  filtering variants
-  const validVariants = variants.filter(
-    v => v.color && v.size && v.price
-  )
+    //  filtering variants
+    const validVariants = variants.filter(
+      v => v.color && v.size && v.price
+    )
 
-  //  sending data 
-  const variantsData = validVariants.map(v => ({
-    color: v.color,
-    size: v.size,
-    price: Number(v.price)
-  }))
+    //  sending data 
+    const variantsData = validVariants.map(v => ({
+      color: v.color,
+      size: v.size,
+      price: Number(v.price)
+    }))
 
-  formData.append("variants", JSON.stringify(variantsData))
+    formData.append("variants", JSON.stringify(variantsData))
 
-  //  attaching images 
-  validVariants.forEach((variant, index) => {
-    if (variant.images && variant.images.length > 0) {
-      variant.images.forEach(file => {
-        formData.append(`images_${index}`, file)
-      })
-    }
-  })
-
-  try {
-    const res = await api.post("/seller/product/add", formData, {
-      withCredentials: true
+    //  attaching images 
+    validVariants.forEach((variant, index) => {
+      if (variant.images && variant.images.length > 0) {
+        variant.images.forEach(file => {
+          formData.append(`images_${index}`, file)
+        })
+      }
     })
 
-    alert(res.data.message)
-    navigate("/seller/product/list")
+    try {
+      const res = await api.post("/seller/product/add", formData, {
+        withCredentials: true
+      })
 
-  } catch (error) {
-    console.log(error)
+      alert(res.data.message)
+      navigate("/seller/product/list")
+
+    } catch (error) {
+      console.log(error)
+    }
   }
-}
 
- return (
-  <div className="auth-container">
-    <div className="auth-card">
+  return (
+    <div className="auth-container">
+      <div className="auth-card">
 
-      <h2>Add Product</h2>
+        <h2>Add Product</h2>
 
-      <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
 
-        <input
-          type="text"
-          name="name"
-          placeholder="Product Name"
-          onChange={handleChange}
-        />
+          <input
+            type="text"
+            name="name"
+            placeholder="Product Name"
+            onChange={handleChange}
+          />
 
-        <textarea
-          name="description"
-          placeholder="Description"
-          onChange={handleChange}
-        />
+          <textarea
+            name="description"
+            placeholder="Description"
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            placeholder="Category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          />
 
-        <h3>Variants</h3>
+          <h3>Variants</h3>
 
-        {variants.map((variant, index) => (
-          <div
-            key={index}
-            style={{
-              border: "1px solid #E5E7EB",
-              marginBottom: "10px",
-              padding: "10px",
-              borderRadius: "8px"
-            }}
-          >
-            <input
-              type="text"
-              name="color"
-              placeholder="Color"
-              onChange={(e) => handleVariantChange(index, e)}
-            />
+          {variants.map((variant, index) => (
+            <div
+              key={index}
+              style={{
+                border: "1px solid #E5E7EB",
+                marginBottom: "10px",
+                padding: "10px",
+                borderRadius: "8px"
+              }}
+            >
+              <input
+                type="text"
+                name="color"
+                placeholder="Color"
+                onChange={(e) => handleVariantChange(index, e)}
+              />
 
-            <input
-              type="text"
-              name="size"
-              placeholder="Size"
-              onChange={(e) => handleVariantChange(index, e)}
-            />
+              <input
+                type="text"
+                name="size"
+                placeholder="Size"
+                onChange={(e) => handleVariantChange(index, e)}
+              />
 
-            <input
-              type="number"
-              name="price"
-              placeholder="Price"
-              onChange={(e) => handleVariantChange(index, e)}
-            />
+              <input
+                type="number"
+                name="price"
+                placeholder="Price"
+                onChange={(e) => handleVariantChange(index, e)}
+              />
 
-            <input
-              type="file"
-              multiple
-              onChange={(e) => handleImageChange(index, e)}
-            />
-          </div>
-        ))}
+              <input
+                type="file"
+                multiple
+                onChange={(e) => handleImageChange(index, e)}
+              />
+            </div>
+          ))}
 
-        <button type="button" onClick={addVariant}>
-          + Add Variant
-        </button>
+          <button type="button" onClick={addVariant}>
+            + Add Variant
+          </button>
 
-        <button type="submit" style={{ marginTop: "10px" }}>
-          Add Product
-        </button>
+          <button type="submit" style={{ marginTop: "10px" }}>
+            Add Product
+          </button>
 
-      </form>
+        </form>
 
+      </div>
     </div>
-  </div>
-)
+  )
 }

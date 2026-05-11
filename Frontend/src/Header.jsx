@@ -4,13 +4,15 @@ import { useCart } from "./CartContext"
 import { useAuth } from "./AuthContext"
 import { useAdmin } from "./AdminContext"
 import { useSeller } from "./seller pages/SellerContext"
+import { useWishlist } from "./WishlistContext"
 
 export default function Header() {
 
   const navigate = useNavigate()
 
   const { cart, clearCart } = useCart()
-
+  const {clearWishlist}=useWishlist()
+  const { wishlist } = useWishlist()
   const { isLoggedIn: userLoggedIn, logoutUser } = useAuth()
   const { isLoggedIn: adminLoggedIn, logoutAdmin } = useAdmin()
   const { isLoggedIn: sellerLoggedIn, logoutSeller } = useSeller()
@@ -32,6 +34,7 @@ export default function Header() {
       if (sellerLoggedIn) await logoutSeller()
 
       clearCart()
+      clearWishlist()
 
       navigate("/")
 
@@ -50,9 +53,14 @@ export default function Header() {
 
         {/* Show cart only for user */}
         {userLoggedIn && (
-          <Link to="/user/cart">
-            Cart ({count})
-          </Link>
+          <>
+            <Link to="/user/cart">
+              Cart ({count})
+            </Link>
+            <Link to="/wishlist">
+              Wishlist ({wishlist.length})
+            </Link>
+          </>
         )}
 
         {/* LOGIN / LOGOUT TOGGLE */}

@@ -3,6 +3,10 @@ import mongoose from "mongoose"
 const productSchema = new mongoose.Schema({
   name: { type: String, required: true },
   description: { type: String, required: true },
+  category: {
+    type: String,
+    required: true
+  },
   variants: [
     {
       color: { type: String },
@@ -14,10 +18,11 @@ const productSchema = new mongoose.Schema({
     }
   ],
   sellerId: {
-  type: mongoose.Schema.Types.ObjectId,
-  ref: "User",
-  required: true
-}
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "seller",
+    required: true
+  }
+  
 })
 
 const Product = mongoose.model("product", productSchema)

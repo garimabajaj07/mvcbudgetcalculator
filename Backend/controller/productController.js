@@ -2,7 +2,7 @@ import Product from "../model/productSchema.js"
 
 export async function addProduct(req, res) {
   try {
-    const { name, description, variants } = req.body  
+    const { name, description, variants, category } = req.body
 
     // parse variants
     let parsedVariants = JSON.parse(variants)
@@ -35,7 +35,9 @@ export async function addProduct(req, res) {
     const product = new Product({
       name,
       description,
-      variants: parsedVariants
+      category,
+      variants: parsedVariants,
+      sellerId: req.seller.id
     })
 
     await product.save()
@@ -47,24 +49,43 @@ export async function addProduct(req, res) {
     res.status(500).json({ message: error.message })
   }
 }
-
 export async function showProducts(req, res) {
   try {
-    const products = await Product.find()
+
+    const { search, category } = req.query
+
+    let query = {}
+
+    // SEARCH
+    if (search) {
+      query.name = {
+        $regex: search,
+        $options: "i"
+      }
+    }
+
+    // CATEGORY
+    if (category) {
+      query.category = category
+    }
+
+    const products = await Product.find(query)
+
     res.json(products)
 
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({
+      message: error.message
+    })
   }
-
 }
 
 export async function singleProductDetail(req, res) {
   try {
     const { id } = req.params
-    const singleProduct = await Product.findById(id)
-    
-     if (!singleProduct) {
+    const singleProduct = await Product.findById(id).populate("sellerId", "name email phoneNo")
+
+    if (!singleProduct) {
       return res.status(404).json({ message: "Product not found" })
     }
 

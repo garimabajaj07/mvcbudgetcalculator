@@ -132,6 +132,7 @@ h4 {
 
 /* PRODUCT CARD */
 .product-card {
+  position: relative;
   background: white;
   border-radius: 16px;
   overflow: hidden;
@@ -833,7 +834,94 @@ td {
   padding: 12px;
   font-size: 15px;
 }
+.wishlist-icon {
+  z-index: 1;
+  position: absolute;
+  top: 12px;
+  right: 12px;
 
+  width: 52px;
+  height: 52px;
+
+  border-radius: 50%;
+  border: none;
+
+  background: rgba(255,255,255,0.95);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 18px;
+
+  color: #6b7280;
+  cursor: pointer;
+
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+
+  transition: 0.25s ease;
+}
+
+.wishlist-icon:hover {
+  transform: scale(1.08);
+}
+
+.wishlist-icon svg {
+  transition: 0.25s;
+}
+
+/* FILLED HEART */
+.wishlist-icon .fa-heart {
+  color: #ef4444;
+}
+.image-wrapper {
+  position: relative;
+}
+.seller-box {
+  margin-top: 15px;
+  padding: 15px;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.seller-box h4 {
+  margin-bottom: 10px;
+}
+
+.seller-box p {
+  margin-bottom: 6px;
+  color: #475569;
+}
+.search-filter-container {
+  margin-bottom: 25px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 15px;
+  font-size: 15px;
+}
+
+.category-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.category-buttons button {
+  background: white;
+  color: #0F172A;
+  border: 1px solid #ddd;
+}
+
+.category-buttons button:hover {
+  background: #0F172A;
+  color: white;
+}
 /* RESPONSIVE */
 @media (max-width: 768px) {
   .cart-layout {

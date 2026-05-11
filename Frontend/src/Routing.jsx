@@ -26,6 +26,8 @@ import SellerProductList from './seller pages/SellerProductList'
 import UserRecords from './UserRecords'
 import SellerRecords from './SellerRecords'
 import Register from './Register'
+import Wishlist from './Wishlist'
+import { WishlistProvider } from './WishlistContext'
 
 const navigator = createBrowserRouter([
     {
@@ -42,7 +44,7 @@ const navigator = createBrowserRouter([
                     <UserRecords />
                 </ProtectAdmin>
         },
-         {
+        {
             path: "admin/seller/records",
             element:
                 <ProtectAdmin>
@@ -55,7 +57,7 @@ const navigator = createBrowserRouter([
             element:
                 <Login />
         },
-       
+
         {
             path: "user/register",
             element: <Register />
@@ -98,9 +100,9 @@ const navigator = createBrowserRouter([
         {
             path: "admin/product/records",
             element:
-            <ProtectAdmin>
-                <ProductTable />
-            </ProtectAdmin>
+                <ProtectAdmin>
+                    <ProductTable />
+                </ProtectAdmin>
         },
         {
             path: "product/edit/:id",
@@ -131,13 +133,20 @@ const navigator = createBrowserRouter([
                     <SellerAddProduct />
                 </ProtectSeller>
         },
-         {
+        {
             path: "seller/product/list",
             element:
                 <ProtectSeller>
                     <SellerProductList />
                 </ProtectSeller>
         },
+        {
+            path: "/wishlist",
+            element:
+                <AuthProvider>
+                    <Wishlist />
+                </AuthProvider>
+        }
 
         ]
 
@@ -150,9 +159,11 @@ export default function Routing() {
             <SellerProvider>
                 <AdminProvider>
                     <AuthProvider>
-                        <CartProvider>
-                            <RouterProvider router={navigator}></RouterProvider>
-                        </CartProvider>
+                        <WishlistProvider>
+                            <CartProvider>
+                                <RouterProvider router={navigator}></RouterProvider>
+                            </CartProvider>
+                        </WishlistProvider>
                     </AuthProvider>
                 </AdminProvider>
             </SellerProvider>

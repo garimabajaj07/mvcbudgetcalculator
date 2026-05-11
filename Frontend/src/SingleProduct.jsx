@@ -4,6 +4,8 @@ import api from "../axios"
 import { useCart } from "./CartContext"
 import useTitle from "./hooks/UseTitle"
 import { useAuth } from "./AuthContext"
+import { useWishlist } from "./WishlistContext"
+import { FaHeart, FaRegHeart } from "react-icons/fa"
 
 export default function SingleProduct() {
 
@@ -12,6 +14,11 @@ export default function SingleProduct() {
 
   const [product, setProduct] = useState(null)
   const [selectedVariant, setSelectedVariant] = useState(null)
+  const {
+    addToWishlist,
+    removeFromWishlist,
+    isInWishlist
+  } = useWishlist()
 
   useTitle(product?.name || "Loading...")
 
@@ -131,6 +138,26 @@ export default function SingleProduct() {
               ))}
             </div>
           </div>
+          <div className="image-wrapper">
+            <button
+              className={`wishlist-icon ${isInWishlist(product._id) ? "active" : ""}`}
+              onClick={(e) => {
+                e.preventDefault()
+
+                if (isInWishlist(product._id)) {
+                  removeFromWishlist(product._id)
+                } else {
+                  addToWishlist(product._id)
+                }
+              }}
+            >
+              {isInWishlist(product._id)
+                ? <FaHeart color="#ef4444" />
+                : <FaRegHeart />
+              }
+            </button>
+          </div>
+
 
           {/* CART */}
           <div className="cart-section">
@@ -145,6 +172,21 @@ export default function SingleProduct() {
                 <button onClick={handleIncrease}>+</button>
               </div>
             )}
+          </div>
+          <div className="seller-box">
+            <h4>Seller Info:</h4>
+
+            <p>
+              <strong>Name:</strong> {product?.sellerId?.name}
+            </p>
+
+            <p>
+              <strong>Email:</strong> {product?.sellerId?.email}
+            </p>
+
+            <p>
+              <strong>Phone:</strong> {product?.sellerId?.phoneNo}
+            </p>
           </div>
 
         </div>
